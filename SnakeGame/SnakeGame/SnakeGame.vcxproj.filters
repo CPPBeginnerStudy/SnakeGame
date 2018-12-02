@@ -27,6 +27,9 @@
     <ClCompile Include="Object.cpp">
       <Filter>Class\Object</Filter>
     </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Class\Singleton</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -37,6 +40,9 @@
     </ClInclude>
     <ClInclude Include="Object.h">
       <Filter>Class\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>Class\Singleton</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

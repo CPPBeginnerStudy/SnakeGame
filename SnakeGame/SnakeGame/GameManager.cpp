@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "GameManager.h"
+#include "Console.h"
 #include "Object.h"
 
 
@@ -26,11 +27,13 @@ void GameManager::Shutdown()
 
 void GameManager::Init()
 {
+    Console::GetInstance().Init();
     m_IsOn = true;
 }
 
 void GameManager::Release()
 {
+    Console::GetInstance().Release();
     for (auto& pObject : m_ObjectList)
     {
         pObject->Release();
@@ -57,8 +60,12 @@ void GameManager::Update()
 
 void GameManager::Render()
 {
+    auto& console = Console::GetInstance();
+    console.Clear();
+
     for (auto& pObject : m_ObjectList)
     {
         pObject->Render();
     }
+    console.SwapBuffer();
 }
