@@ -1,17 +1,16 @@
 #include "pch.h"
 #include "GameManager.h"
+#include "Object.h"
 
 
 GameManager::GameManager()
     : m_IsOn(false)
-    , m_LoopCount(0)
 {
 }
 
 GameManager::~GameManager()
 {
 }
-
 
 void GameManager::Run()
 {
@@ -27,23 +26,39 @@ void GameManager::Shutdown()
 
 void GameManager::Init()
 {
-    m_LoopCount = 10;
     m_IsOn = true;
 }
 
 void GameManager::Release()
 {
+    for (auto& pObject : m_ObjectList)
+    {
+        pObject->Release();
+        delete pObject;
+    }
 }
 
 void GameManager::MainLoop()
 {
     while (m_IsOn)
     {
-        std::cout << "Hello World!\n";
+        Update();
+        Render();
+    }
+}
 
-        if (--m_LoopCount < 1)
-        {
-            Shutdown();
-        }
+void GameManager::Update()
+{
+    for (auto& pObject : m_ObjectList)
+    {
+        pObject->Update();
+    }
+}
+
+void GameManager::Render()
+{
+    for (auto& pObject : m_ObjectList)
+    {
+        pObject->Render();
     }
 }

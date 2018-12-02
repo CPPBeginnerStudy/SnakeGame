@@ -7,6 +7,12 @@
     <Filter Include="Class">
       <UniqueIdentifier>{eaf32f5f-957f-4c90-967b-c5b2ea8c30de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Class\Object">
+      <UniqueIdentifier>{8b41fe2a-2e91-4fd9-947f-34e1ef78fe35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Class\Singleton">
+      <UniqueIdentifier>{0717dfe4-daf5-4064-9311-d550e67fae4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -16,7 +22,10 @@
       <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
-      <Filter>Class</Filter>
+      <Filter>Class\Singleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Class\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -24,7 +33,10 @@
       <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="GameManager.h">
-      <Filter>Class</Filter>
+      <Filter>Class\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Class\Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

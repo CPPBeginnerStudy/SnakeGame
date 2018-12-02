@@ -1,4 +1,6 @@
 #pragma once
+class Object;
+
 class GameManager
 {
 public:
@@ -11,15 +13,18 @@ private:
     GameManager();
     ~GameManager();
 public:
-    void Run();
-    void Shutdown();
+    void                Run();
+    void                Shutdown();
 
 private:
-    void Init();
-    void Release();
-    void MainLoop();
+    void                Init();
+    void                Release();
+    void                MainLoop();
+
+    void                Update();
+    void                Render();
 
 private:
-    bool m_IsOn;
-    int  m_LoopCount;
+    bool                m_IsOn;
+    std::list<Object*>  m_ObjectList;
 };
