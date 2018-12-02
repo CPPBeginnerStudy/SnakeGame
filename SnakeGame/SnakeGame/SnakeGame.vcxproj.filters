@@ -15,10 +15,16 @@
     <ClCompile Include="main.cpp">
       <Filter>Base</Filter>
     </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Class</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
