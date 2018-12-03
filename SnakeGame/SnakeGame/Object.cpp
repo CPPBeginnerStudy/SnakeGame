@@ -26,6 +26,7 @@ void Object::Release()
 
 void Object::Update()
 {
+    // 화면의 바운더리를 벗어나려 하면 반대 방향으로 전환하여 계속 움직이도록 하는 코드
     RECT boundaryBox = Console::GetInstance().GetBoundaryBox();
     if (m_IsRight)
     {
@@ -67,5 +68,6 @@ void Object::Update()
 
 void Object::Render()
 {
+    // 현재 내 위치(m_X, m_Y)에 내 모습(m_Shape)을 콘솔이 그리도록 한다.
     Console::GetInstance().Print(m_Shape, m_X, m_Y);
 }
