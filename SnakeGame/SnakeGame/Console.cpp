@@ -78,3 +78,13 @@ void Console::PrintText(const std::string& _text, short _x, short _y)
     SetConsoleCursorPosition(m_ScreenBuffer[m_BackBufferIdx], { _x, _y });
     WriteConsole(m_ScreenBuffer[m_BackBufferIdx], _text.c_str(), _text.length(), &dw, nullptr);
 }
+
+RECT Console::GetBoundaryBox() const
+{
+    RECT boundaryBox;
+    boundaryBox.top = 0;
+    boundaryBox.left = 0;
+    boundaryBox.right = m_ScreenWidth - 2;
+    boundaryBox.bottom = m_ScreenHeight - 2;
+    return boundaryBox;
+}

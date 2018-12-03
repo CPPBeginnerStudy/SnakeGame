@@ -27,7 +27,20 @@ void GameManager::Shutdown()
 
 void GameManager::Init()
 {
-    Console::GetInstance().Init();
+    srand((unsigned int)time(nullptr));
+    auto& console = Console::GetInstance();
+    console.Init();
+
+    RECT boundaryBox = console.GetBoundaryBox();
+    for (int i = 0; i < 5; ++i)
+    {
+        Object* pObject = new Object();
+        pObject->Init();
+        pObject->SetShape('O');
+        pObject->SetX(rand() % boundaryBox.right);
+        pObject->SetY(rand() % boundaryBox.bottom);
+        m_ObjectList.push_back(pObject);
+    }
     m_IsOn = true;
 }
 
@@ -47,6 +60,8 @@ void GameManager::MainLoop()
     {
         Update();
         Render();
+
+        Sleep(30);
     }
 }
 

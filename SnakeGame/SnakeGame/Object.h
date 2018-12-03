@@ -22,4 +22,7 @@ private:
     char            m_Shape;
     short           m_X;
     short           m_Y;
+
+    bool            m_IsRight;
+    bool            m_IsBottom;
 };
