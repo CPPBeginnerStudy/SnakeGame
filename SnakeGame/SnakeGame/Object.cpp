@@ -4,7 +4,7 @@
 
 
 Object::Object()
-    : m_Shape(' ')
+    : m_Shape(L' ') // ' '이 아닌 L' '인 이유는, char가 아닌 wchar_t이기 때문.
     , m_X(0)
     , m_Y(0)
     , m_IsRight(true)

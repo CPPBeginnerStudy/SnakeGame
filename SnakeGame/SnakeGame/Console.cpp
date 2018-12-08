@@ -70,7 +70,7 @@ void Console::Clear()
     // 즉, 아무 글자도 보이지 않게 지워주는 동작.
     DWORD dw;
     DWORD screenSize = m_ScreenWidth * m_ScreenHeight;
-    FillConsoleOutputCharacter(m_ScreenBuffer[m_BackBufferIdx], ' ', screenSize, { 0, 0 }, &dw);
+    FillConsoleOutputCharacter(m_ScreenBuffer[m_BackBufferIdx], L' ', screenSize, { 0, 0 }, &dw);
 }
 
 void Console::SwapBuffer()
@@ -86,7 +86,7 @@ void Console::SwapBuffer()
     }
 }
 
-void Console::Print(char _shape, short _x, short _y)
+void Console::Print(wchar_t _shape, short _x, short _y)
 {
     // 현재의 백버퍼에서 커서를 지정한 위치로 이동시키고, 그 위치에 1개의 글자를 Write한다.
     DWORD dw;
@@ -94,10 +94,10 @@ void Console::Print(char _shape, short _x, short _y)
     WriteConsole(m_ScreenBuffer[m_BackBufferIdx], &_shape, 1, &dw, nullptr);
 }
 
-void Console::PrintText(const std::string& _text, short _x, short _y)
+void Console::PrintText(const std::wstring& _text, short _x, short _y)
 {
     // 위와 동일하지만, 1개의 글자가 아닌 여러개의 글자, 즉, 문자열을 Write한다.
-    // std::string에서 c_str()멤버함수는 해당 스트링의 첫번째 글자의 주소를 가져온다.
+    // std::wstring에서 c_str()멤버함수는 해당 스트링의 첫번째 글자의 주소를 가져온다.
     // 즉, 위의 &_shape와 동일하게 Write할 문자의 시작주소가 넘겨지게 되고, 그 다음 인수인
     // _text.length()를 통해 얼만큼의 길이만큼 문자열을 Write할지를 알려주는 것.
     // 기본적으로는 위의 Print()함수만 구현해도 되지만, 메뉴 등 텍스트 정보를 편하게 출력하려면

@@ -45,7 +45,7 @@ void GameManager::Init()
     {
         Object* pObject = new Object();
         pObject->Init();
-        pObject->SetShape('O');
+        pObject->SetShape(L'¡Ú');
         pObject->SetX(rand() % boundaryBox.right);
         pObject->SetY(rand() % boundaryBox.bottom);
         m_ObjectList.push_back(pObject);
