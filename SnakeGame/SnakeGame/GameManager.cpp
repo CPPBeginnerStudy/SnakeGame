@@ -2,6 +2,7 @@
 #include "GameManager.h"
 #include "Console.h"
 #include "Object.h"
+#include "RandomSpeedObj.h"
 
 
 GameManager::GameManager()
@@ -41,11 +42,24 @@ void GameManager::Init()
 
     // 5개의 Object를 생성하면서 x, y 좌표를 매번 랜덤하게 지정한다. (바운더리 내에서)
     RECT boundaryBox = console.GetBoundaryBox();
-    for (int i = 0; i < 5; ++i)
+
+    // 2개는 기본 오브젝트로 생성
+    for (int i = 0; i < 2; ++i)
     {
         Object* pObject = new Object();
         pObject->Init();
         pObject->SetShape(L'★');
+        pObject->SetX(rand() % boundaryBox.right);
+        pObject->SetY(rand() % boundaryBox.bottom);
+        m_ObjectList.push_back(pObject);
+    }
+    // 3개는 Object를 상속받은 RandomSpeedObj라는 클래스로 생성
+    // RandomSpeedObj는 Object의 자식이기 때문에 Object*를 담는 자료구조에 같이 보관 가능하다.
+    for (int i = 0; i < 3; ++i)
+    {
+        Object* pObject = new RandomSpeedObj();
+        pObject->Init();
+        pObject->SetShape(L'●');
         pObject->SetX(rand() % boundaryBox.right);
         pObject->SetY(rand() % boundaryBox.bottom);
         m_ObjectList.push_back(pObject);
