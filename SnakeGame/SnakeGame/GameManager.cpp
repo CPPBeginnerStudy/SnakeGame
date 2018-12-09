@@ -49,7 +49,6 @@ void GameManager::Init()
     for (int i = 0; i < 2; ++i)
     {
         Object* pObject = new Object();
-        pObject->Init();
         pObject->SetShape(L'★');
         pObject->SetX(rand() % boundaryBox.right);
         pObject->SetY(rand() % boundaryBox.bottom);
@@ -60,7 +59,6 @@ void GameManager::Init()
     for (int i = 0; i < 3; ++i)
     {
         Object* pObject = new RandomSpeedObj();
-        pObject->Init();
         pObject->SetShape(L'●');
         pObject->SetX(rand() % boundaryBox.right);
         pObject->SetY(rand() % boundaryBox.bottom);
@@ -69,7 +67,6 @@ void GameManager::Init()
 
     // 우리가 직접 조종할 뱀의 몸통을 생성한다.
     m_pSnakeBody = new SnakeBody();
-    m_pSnakeBody->Init();
     m_pSnakeBody->SetShape(L'▣');
     m_pSnakeBody->SetX(boundaryBox.right / 2);  // 중앙에 생성
     m_pSnakeBody->SetY(boundaryBox.bottom / 2); // 중앙에 생성
@@ -89,9 +86,7 @@ void GameManager::Release()
     // 즉, m_ObjectList의 보관개수만큼 반복문이 실행된다. (5개 보관중이면 5번)
     for (auto& pObject : m_ObjectList)
     {
-        // 현재 가져온 데이터(pObejct)에 대해 Release()를 호출해주고,
-        // 해당 인스턴스를 delete하여 메모리 할당 해제해준다.
-        pObject->Release();
+        // 현재 가져온 데이터(pObejct)를 delete하여 메모리 할당 해제해준다.
         delete pObject;
     }
     // 보관중이던 모든 포인터들이 그 가리키던 인스턴스들을 다 할당해제했으니,

@@ -15,11 +15,10 @@ public:
     Object();
     virtual ~Object();
 
-    virtual void    Init();
-    virtual void    Release();
     virtual void    Update();
     virtual void    Render();
 
+public:
     wchar_t         GetShape() const { return m_Shape; }
     float           GetX() const { return m_X; }
     float           GetY() const { return m_Y; }

@@ -15,8 +15,8 @@
 //     C* pC = new C(); // A생성자->B생성자->C생성자 순으로 호출됨.
 // }
 RandomSpeedObj::RandomSpeedObj()
-    : m_XSpeed(0.f)
-    , m_YSpeed(0.f)
+    : m_XSpeed(1.f)
+    , m_YSpeed(1.f)
 {
 }
 
@@ -40,22 +40,6 @@ RandomSpeedObj::RandomSpeedObj()
 // }
 RandomSpeedObj::~RandomSpeedObj()
 {
-}
-
-void RandomSpeedObj::Init()
-{
-    // 오버라이딩한 함수는 기본적으로 부모함수를 호출하지 않는다.
-    // 따라서 부모함수도 호출할 필요가 있을 경우 아래와 같이 부모클래스::함수명 으로 호출해준다.
-    // Init()의 경우는 부모의 Init()을 먼저 호출하고, 추가로 나(자식)가 초기화할 것을 해준다.
-    Object::Init();
-    m_XSpeed = 1.f;
-    m_YSpeed = 1.f;
-}
-
-void RandomSpeedObj::Release()
-{
-    // 부모 클래스의 구현과 다르게 처리할 게 없다면, 그냥 부모꺼를 여기서 다시 호출해주면 된다.
-    Object::Release();
 }
 
 void RandomSpeedObj::Update()
@@ -107,5 +91,8 @@ void RandomSpeedObj::Update()
 
 void RandomSpeedObj::Render()
 {
+    // 오버라이딩한 함수는 기본적으로 부모함수를 호출하지 않는다.
+    // 따라서 부모함수도 호출할 필요가 있을 경우 아래와 같이 부모클래스::함수명 으로 호출해준다.
+    // 부모 클래스의 구현과 다르게 처리할 게 없다면, 그냥 부모꺼를 여기서 다시 호출해주면 된다.
     Object::Render();
 }

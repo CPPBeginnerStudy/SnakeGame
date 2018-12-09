@@ -4,23 +4,12 @@
 
 
 SnakeBody::SnakeBody()
-    : m_Speed(0.f)
+    : m_Speed(1.f)
 {
 }
 
 SnakeBody::~SnakeBody()
 {
-}
-
-void SnakeBody::Init()
-{
-    Object::Init();
-    m_Speed = 1.f;
-}
-
-void SnakeBody::Release()
-{
-    Object::Release();
 }
 
 void SnakeBody::Update()

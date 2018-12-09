@@ -9,8 +9,6 @@ public:
     virtual ~RandomSpeedObj();
 
     // 상속받는(오버라이딩) 함수들은 뒤에 override 키워드를 붙여준다.
-    virtual void    Init() override;
-    virtual void    Release() override;
     virtual void    Update() override;
     virtual void    Render() override;
 
