@@ -33,6 +33,9 @@
     <ClCompile Include="RandomSpeedObj.cpp">
       <Filter>Class\Object</Filter>
     </ClCompile>
+    <ClCompile Include="SnakeBody.cpp">
+      <Filter>Class\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -48,6 +51,9 @@
       <Filter>Class\Singleton</Filter>
     </ClInclude>
     <ClInclude Include="RandomSpeedObj.h">
+      <Filter>Class\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SnakeBody.h">
       <Filter>Class\Object</Filter>
     </ClInclude>
   </ItemGroup>

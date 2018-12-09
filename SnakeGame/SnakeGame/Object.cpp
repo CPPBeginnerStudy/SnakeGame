@@ -5,8 +5,8 @@
 
 Object::Object()
     : m_Shape(L' ') // ' '이 아닌 L' '인 이유는, char가 아닌 wchar_t이기 때문.
-    , m_X(0)
-    , m_Y(0)
+    , m_X(0.f)
+    , m_Y(0.f)
     , m_IsRight(false)
     , m_IsBottom(false)
 {
@@ -30,7 +30,7 @@ void Object::Update()
     RECT boundaryBox = Console::GetInstance().GetBoundaryBox();
     if (m_IsRight)
     {
-        ++m_X;
+        m_X += 2.f;
         if (m_X > boundaryBox.right)
         {
             m_X = boundaryBox.right;
@@ -39,7 +39,7 @@ void Object::Update()
     }
     else
     {
-        --m_X;
+        m_X -= 2.f;
         if (m_X < boundaryBox.left)
         {
             m_X = boundaryBox.left;
@@ -48,7 +48,7 @@ void Object::Update()
     }
     if (m_IsBottom)
     {
-        ++m_Y;
+        m_Y += 1.f;
         if (m_Y > boundaryBox.bottom)
         {
             m_Y = boundaryBox.bottom;
@@ -57,7 +57,7 @@ void Object::Update()
     }
     else
     {
-        --m_Y;
+        m_Y -= 1.f;
         if (m_Y < boundaryBox.top)
         {
             m_Y = boundaryBox.top;
@@ -69,5 +69,5 @@ void Object::Update()
 void Object::Render()
 {
     // 현재 내 위치(m_X, m_Y)에 내 모습(m_Shape)을 콘솔이 그리도록 한다.
-    Console::GetInstance().Print(m_Shape, m_X, m_Y);
+    Console::GetInstance().Print(m_Shape, (short)m_X, (short)m_Y);
 }

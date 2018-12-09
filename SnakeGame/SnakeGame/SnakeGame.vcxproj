@@ -156,6 +156,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="RandomSpeedObj.h" />
+    <ClInclude Include="SnakeBody.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Console.cpp" />
@@ -169,6 +170,7 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RandomSpeedObj.cpp" />
+    <ClCompile Include="SnakeBody.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

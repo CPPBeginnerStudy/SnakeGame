@@ -15,8 +15,8 @@
 //     C* pC = new C(); // A생성자->B생성자->C생성자 순으로 호출됨.
 // }
 RandomSpeedObj::RandomSpeedObj()
-    : m_XSpeed(0)
-    , m_YSpeed(0)
+    : m_XSpeed(0.f)
+    , m_YSpeed(0.f)
 {
 }
 
@@ -48,8 +48,8 @@ void RandomSpeedObj::Init()
     // 따라서 부모함수도 호출할 필요가 있을 경우 아래와 같이 부모클래스::함수명 으로 호출해준다.
     // Init()의 경우는 부모의 Init()을 먼저 호출하고, 추가로 나(자식)가 초기화할 것을 해준다.
     Object::Init();
-    m_XSpeed = 1;
-    m_YSpeed = 1;
+    m_XSpeed = 1.f;
+    m_YSpeed = 1.f;
 }
 
 void RandomSpeedObj::Release()
@@ -65,22 +65,22 @@ void RandomSpeedObj::Update()
     RECT boundaryBox = Console::GetInstance().GetBoundaryBox();
     if (m_IsRight)
     {
-        m_X += 1 * m_XSpeed;
+        m_X += 2 * m_XSpeed;
         if (m_X > boundaryBox.right)
         {
             m_X = boundaryBox.right;
             m_IsRight = false;
-            m_XSpeed = rand() % 4 + 1;
+            m_XSpeed = (rand() % 5 + 1) * 0.5f; // 0.5배 ~ 3배
         }
     }
     else
     {
-        m_X -= 1 * m_XSpeed;
+        m_X -= 2 * m_XSpeed;
         if (m_X < boundaryBox.left)
         {
             m_X = boundaryBox.left;
             m_IsRight = true;
-            m_XSpeed = rand() % 4 + 1;
+            m_XSpeed = (rand() % 6 + 1) * 0.5f;
         }
     }
     if (m_IsBottom)
@@ -90,7 +90,7 @@ void RandomSpeedObj::Update()
         {
             m_Y = boundaryBox.bottom;
             m_IsBottom = false;
-            m_YSpeed = rand() % 2 + 1;
+            m_YSpeed = (rand() % 6 + 1) * 0.5f;
         }
     }
     else
@@ -100,7 +100,7 @@ void RandomSpeedObj::Update()
         {
             m_Y = boundaryBox.top;
             m_IsBottom = true;
-            m_YSpeed = rand() % 2 + 1;
+            m_YSpeed = (rand() % 6 + 1) * 0.5f;
         }
     }
 }

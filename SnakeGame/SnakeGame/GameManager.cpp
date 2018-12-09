@@ -3,10 +3,12 @@
 #include "Console.h"
 #include "Object.h"
 #include "RandomSpeedObj.h"
+#include "SnakeBody.h"
 
 
 GameManager::GameManager()
     : m_IsOn(false)
+    , m_pSnakeBody(nullptr)
 {
 }
 
@@ -65,6 +67,14 @@ void GameManager::Init()
         m_ObjectList.push_back(pObject);
     }
 
+    // 우리가 직접 조종할 뱀의 몸통을 생성한다.
+    m_pSnakeBody = new SnakeBody();
+    m_pSnakeBody->Init();
+    m_pSnakeBody->SetShape(L'▣');
+    m_pSnakeBody->SetX(boundaryBox.right / 2);  // 중앙에 생성
+    m_pSnakeBody->SetY(boundaryBox.bottom / 2); // 중앙에 생성
+    m_ObjectList.push_back(m_pSnakeBody);
+
     // 모든 초기화가 완료되었으므로, 게임의 상태를 on으로 설정한다.
     m_IsOn = true;
 }
@@ -108,6 +118,9 @@ void GameManager::MainLoop()
 
 void GameManager::Update()
 {
+    // 먼저 키입력에 대한 처리를 한다.
+    KeyInputHandling();
+
     // 게임이 가지고 있는 모든 객체들에게
     // 각자 자신을 업데이트 하도록 Update를 호출시켜 준다.
     for (auto& pObject : m_ObjectList)
@@ -131,4 +144,58 @@ void GameManager::Render()
     // 모든 객체의 렌더링이 끝나면, 백버퍼와 스크린버퍼를 교체하여
     // 화면에 한번에 이번 프레임에 바뀐 렌더링 내용이 표시되도록 한다.
     console.SwapBuffer();
+}
+
+void GameManager::KeyInputHandling()
+{
+    // GetAsyncKeyState()함수는 현재 키보드의 특정 키의 눌린 상태를 반환한다.
+    // 어떤 키를 확인할지는 인자로 받으며, VK_ 로 시작하는 매크로값으로 정해져있다.
+    // 키값 종류 참고: https://docs.microsoft.com/ko-kr/windows/desktop/inputdev/virtual-key-codes
+    // 반환값은 키의 눌린 상태에 대한 플래그값이며, short타입(2byte)에서 왼쪽끝과 오른쪽끝 비트를 비트플래그로 사용한다.
+    // 현재 키가 눌려있는지를 왼쪽끝 비트로 알려주고, 이전에 눌린적 있었는지를 오른쪽끝 비트로 알려준다.
+    // 즉, 총 4가지의 케이스가 존재한다.
+    // 1. 0000 0000 0000 0000 = 0x0000 : 이전에 누른 적이 없고 호출 시점에서 안눌린 상태
+    // 2. 1000 0000 0000 0000 = 0x8000 : 이전에 누른 적이 없고 호출 시점에서 눌린 상태
+    // 3. 0000 0000 0000 0001 = 0x0001 : 이전에 누른 적이 있고 호출 시점에서 안눌린 상태
+    // 4. 1000 0000 0000 0001 = 0x8001 : 이전에 누른 적이 있고 호출 시점에서 눌린 상태
+    // 이를 통해 키가 현시점에서 처음 눌렸는지, 아니면 누르고 있는 상태였는지 등을 체크할 수 있지만,
+    // 사실 일반적으로 이러한 구분까지는 필요없고, 키가 지금 눌려있는지 여부만 알면 되기 때문에
+    // 아래와 같이 0x8000 플래그가 있는지를 비트연산하여 키의 눌림여부를 확인한다. (즉, 위의 2, 4번 케이스를 모두 true처리)
+    if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+    {
+        // ESC 키가 눌리면 프로그램 종료
+        Shutdown();
+    }
+
+    // 방향키 입력 처리 (else if가 아닌 이유는, 여러 키가 같이 눌렸을때에 모두 처리해줘야하기 때문)
+    if (GetAsyncKeyState(VK_UP) & 0x8000)
+    {
+        // 각 키입력에 대한 처리는 각 클래스의 핸들러에서 구현하도록 넘겨준다.
+        // 그래야 메인로직이 깔끔해지고, 이후 작업하기 편해진다.
+        m_pSnakeBody->OnKeyPress(VK_UP);
+
+        // 나중에 SnakeBody말고도 키입력을 받을 대상이 생기면 여기에 추가
+    }
+    if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+    {
+        m_pSnakeBody->OnKeyPress(VK_DOWN);
+    }
+    if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+    {
+        m_pSnakeBody->OnKeyPress(VK_LEFT);
+    }
+    if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+    {
+        m_pSnakeBody->OnKeyPress(VK_RIGHT);
+    }
+
+    // 영문자키는 해당 문자 캐릭터(char)의 바이트값과 대응된다.
+    if (GetAsyncKeyState('Z') & 0x8000)
+    {
+        m_pSnakeBody->OnKeyPress('Z');
+    }
+    if (GetAsyncKeyState('X') & 0x8000)
+    {
+        m_pSnakeBody->OnKeyPress('X');
+    }
 }

@@ -15,7 +15,7 @@ public:
     virtual void    Render() override;
 
 private:
-    int             m_XSpeed;
-    int             m_YSpeed;
+    float           m_XSpeed;
+    float           m_YSpeed;
 };
 
