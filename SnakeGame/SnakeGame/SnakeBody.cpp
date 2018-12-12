@@ -23,65 +23,40 @@ void SnakeBody::Render()
 
 void SnakeBody::OnKeyPress(BYTE _key)
 {
-    RECT boundaryBox = Console::GetInstance().GetBoundaryBox();
+    // 기존의 각각 직접 작성했던 이동 로직을 Move()라는 함수로 만들어놓으니
+    // 여기서도 이렇게 코드를 간결하게 짤 수 있게 됩니다.
     switch (_key)
     {
     case VK_UP:
         {
-            m_Y -= 1 * m_Speed;
-            if (m_Y < boundaryBox.top)
-            {
-                m_Y = boundaryBox.top;
-            }
+            Move(Direction::UP, m_Speed);
         }
         break;
     case VK_DOWN:
         {
-            m_Y += 1 * m_Speed;
-            if (m_Y > boundaryBox.bottom)
-            {
-                m_Y = boundaryBox.bottom;
-            }
+            Move(Direction::DOWN, m_Speed);
         }
         break;
     case VK_LEFT:
         {
-            // x좌표는 y좌표의 절반 간격이기 때문에 동일한 비율로 움직이려면
-            // y좌표보다 2배씩 움직여야 한다.
-            m_X -= 2 * m_Speed;
-            if (m_X < boundaryBox.left)
-            {
-                m_X = boundaryBox.left;
-            }
+            Move(Direction::LEFT, m_Speed);
         }
         break;
     case VK_RIGHT:
         {
-            m_X += 2 * m_Speed;
-            if (m_X > boundaryBox.right)
-            {
-                m_X = boundaryBox.right;
-            }
+            Move(Direction::RIGHT, m_Speed);
         }
         break;
     case 'Z':
         {
-            // 이속 줄이기
-            m_Speed -= 0.1f;
-            if (m_Speed < 0.1f)
-            {
-                m_Speed = 0.1f;
-            }
+            // 이속 줄이기 (최소 0.1배)
+            m_Speed = std::max<float>(m_Speed - 0.1f, 0.1f);
         }
         break;
     case 'X':
         {
-            // 이속 늘리기
-            m_Speed += 0.1f;
-            if (m_Speed > 3.f)
-            {
-                m_Speed = 3.f;
-            }
+            // 이속 늘리기 (최대 3배)
+            m_Speed = std::min<float>(m_Speed + 0.1f, 3.0f);
         }
         break;
     }

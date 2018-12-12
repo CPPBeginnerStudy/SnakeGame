@@ -32,6 +32,8 @@ void GameManager::Shutdown()
 void GameManager::Init()
 {
     // 랜덤값 사용을 위해 랜덤시드를 초기화한다.
+    // 랜덤 시드 초기화는 게임 시작시 단 한번만 수행해야 한다.
+    // (이를 기반으로 앞으로 랜덤값을 산출하게 된다.)
     srand((unsigned int)time(nullptr));
 
     // Console객체의 인스턴스를 가져와서 console이라는 참조변수에 저장하여 사용.

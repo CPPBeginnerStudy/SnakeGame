@@ -18,5 +18,6 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <algorithm>
 
 #endif //PCH_H

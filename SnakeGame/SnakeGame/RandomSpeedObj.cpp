@@ -44,48 +44,19 @@ RandomSpeedObj::~RandomSpeedObj()
 
 void RandomSpeedObj::Update()
 {
-    // Update()의 경우는 부모의 구현을 아예 쓰지 않고, 새롭게 구현을 재정의하기 위해
-    // 부모의 Update()를 호출하지 않은 점 참고.
-    RECT boundaryBox = Console::GetInstance().GetBoundaryBox();
-    if (m_IsRight)
+    // Move()의 리턴값이 false일 때(즉, 바운더리에 닿았을때)
+    // 방향을 반전시키고, 속도를 랜덤으로 변경하는 코드.
+    // 이렇게 기존의 공통된 로직(이동 로직)을 Move()라는 함수로 추출하니
+    // 중복코드가 줄어들고 좀 더 차이점을 파악하기 쉬워졌습니다.
+    if (!Move(m_IsRight ? Direction::RIGHT : Direction::LEFT, m_XSpeed))
     {
-        m_X += 2 * m_XSpeed;
-        if (m_X > boundaryBox.right)
-        {
-            m_X = boundaryBox.right;
-            m_IsRight = false;
-            m_XSpeed = (rand() % 5 + 1) * 0.5f; // 0.5배 ~ 3배
-        }
+        m_IsRight = !m_IsRight;
+        m_XSpeed = (rand() % 6 + 1) * 0.5f; // 0.5배 ~ 3배
     }
-    else
+    if (!Move(m_IsBottom ? Direction::DOWN : Direction::UP, m_YSpeed))
     {
-        m_X -= 2 * m_XSpeed;
-        if (m_X < boundaryBox.left)
-        {
-            m_X = boundaryBox.left;
-            m_IsRight = true;
-            m_XSpeed = (rand() % 6 + 1) * 0.5f;
-        }
-    }
-    if (m_IsBottom)
-    {
-        m_Y += 1 * m_YSpeed;
-        if (m_Y > boundaryBox.bottom)
-        {
-            m_Y = boundaryBox.bottom;
-            m_IsBottom = false;
-            m_YSpeed = (rand() % 6 + 1) * 0.5f;
-        }
-    }
-    else
-    {
-        m_Y -= 1 * m_YSpeed;
-        if (m_Y < boundaryBox.top)
-        {
-            m_Y = boundaryBox.top;
-            m_IsBottom = true;
-            m_YSpeed = (rand() % 6 + 1) * 0.5f;
-        }
+        m_IsBottom = !m_IsBottom;
+        m_YSpeed = (rand() % 6 + 1) * 0.5f;
     }
 }
 
