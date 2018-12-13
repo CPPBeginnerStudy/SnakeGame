@@ -17,5 +17,6 @@ public:
 
 private:
     float           m_Speed;
+    Direction       m_Direction;
 };
 
