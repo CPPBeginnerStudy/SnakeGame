@@ -20,6 +20,7 @@ RandomSpeedObj::RandomSpeedObj()
 	, m_IsRight(false)
 	, m_IsBottom(false)
 {
+	m_Shape = L'★';
 }
 
 // 상속받은 클래스의 소멸자는 자신이 먼저 호출된 후 부모클래스의 소멸자를 호출한다.

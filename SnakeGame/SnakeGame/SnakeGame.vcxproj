@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Apple.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Object.h" />
@@ -159,6 +160,7 @@
     <ClInclude Include="SnakeBody.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Apple.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Object.cpp" />

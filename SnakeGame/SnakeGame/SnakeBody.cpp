@@ -8,6 +8,7 @@ SnakeBody::SnakeBody()
     : m_Speed(1.f)
     , m_Direction(Direction::UP)
 {
+	m_Shape = L'▣';
 }
 
 SnakeBody::~SnakeBody()
@@ -21,11 +22,6 @@ SnakeBody::~SnakeBody()
 
 void SnakeBody::Update()
 {
-    // 일단 임시로 10% 확률로 꼬리 추가
-    if (rand() % 100 < 10)
-    {
-        AddTail();
-    }
     // 원래 뱀꼬리잡기 게임의 뱀은 자동으로 이동합니다..
     // 기존의 각각 직접 작성했던 이동 로직을 Move()라는 함수로 만들어놓으니
     // 여기서도 이렇게 코드를 간결하게 짤 수 있게 됩니다.

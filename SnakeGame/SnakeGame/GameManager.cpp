@@ -4,11 +4,13 @@
 #include "Object.h"
 #include "RandomSpeedObj.h"
 #include "SnakeBody.h"
+#include "Apple.h"
 
 
 GameManager::GameManager()
     : m_IsOn(false)
-    , m_pSnakeBody(nullptr)
+	, m_pSnakeBody(nullptr)
+	, m_pApple(nullptr)
 {
 }
 
@@ -44,25 +46,15 @@ void GameManager::Init()
     auto& console = Console::GetInstance();
     console.Init();
 
-    // 5개의 Object를 생성하면서 x, y 좌표를 매번 랜덤하게 지정한다. (바운더리 내에서)
+	// 동일한 길이에 대해 인게임 좌표보다 cmd좌표가 x값이 2배이기 때문에 2로 나눠준다.
     RECT boundaryBox = console.GetBoundaryBox();
 	boundaryBox.right /= 2;
 
-    // 2개는 기본 오브젝트로 생성
-    for (int i = 0; i < 2; ++i)
-    {
-        Object* pObject = new Object();
-        pObject->SetShape(L'★');
-        pObject->SetX(rand() % boundaryBox.right);
-        pObject->SetY(rand() % boundaryBox.bottom);
-        m_ObjectList.push_back(pObject);
-    }
-    // 3개는 Object를 상속받은 RandomSpeedObj라는 클래스로 생성
-    // RandomSpeedObj는 Object의 자식이기 때문에 Object*를 담는 자료구조에 같이 보관 가능하다.
+	// RandomSpeedObj를 생성하면서 x, y 좌표를 매번 랜덤하게 지정한다. (바운더리 내에서)
+	// RandomSpeedObj는 Object의 자식이기 때문에 Object*를 담는 자료구조에 같이 보관 가능하다.
     for (int i = 0; i < 3; ++i)
     {
         Object* pObject = new RandomSpeedObj();
-        pObject->SetShape(L'●');
         pObject->SetX(rand() % boundaryBox.right);
         pObject->SetY(rand() % boundaryBox.bottom);
         m_ObjectList.push_back(pObject);
@@ -70,10 +62,15 @@ void GameManager::Init()
 
     // 우리가 직접 조종할 뱀의 몸통을 생성한다.
     m_pSnakeBody = new SnakeBody();
-    m_pSnakeBody->SetShape(L'▣');
     m_pSnakeBody->SetX(boundaryBox.right / 2);  // 중앙에 생성
     m_pSnakeBody->SetY(boundaryBox.bottom / 2); // 중앙에 생성
     m_ObjectList.push_back(m_pSnakeBody);
+
+	// 뱀이 먹을 사과를 생성한다.
+	m_pApple = new Apple();
+	m_pApple->SetX(rand() % boundaryBox.right);
+	m_pApple->SetY(rand() % boundaryBox.bottom);
+	m_ObjectList.push_back(m_pApple);
 
     // 모든 초기화가 완료되었으므로, 게임의 상태를 on으로 설정한다.
     m_IsOn = true;
@@ -125,6 +122,20 @@ void GameManager::Update()
     {
         pObject->Update();
     }
+
+	// 뱀이 사과를 먹었으면 뱀에 꼬리를 추가해주고, 사과를 다른 곳으로 옮긴다.
+	if (m_pSnakeBody->GetX() > m_pApple->GetX() - 0.5f &&
+		m_pSnakeBody->GetX() < m_pApple->GetX() + 0.5f &&
+		m_pSnakeBody->GetY() > m_pApple->GetY() - 0.5f &&
+		m_pSnakeBody->GetY() < m_pApple->GetY() + 0.5f)
+	{
+		m_pSnakeBody->AddTail();
+
+		RECT boundaryBox = Console::GetInstance().GetBoundaryBox();
+		boundaryBox.right /= 2;
+		m_pApple->SetX(rand() % boundaryBox.right);
+		m_pApple->SetY(rand() % boundaryBox.bottom);
+	}
 }
 
 void GameManager::Render()
