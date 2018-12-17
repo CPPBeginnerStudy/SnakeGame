@@ -1,31 +1,31 @@
-#pragma once
-// [virtual Å°¿öµåÀÇ ÀÇ¹Ì]
-// ¾î¶² Å¬·¡½ºµéÀ» ¼­·Î »ó¼Ó°ü°è¿¡ ³õÀ» ¶§ virtual Å°¿öµå°¡ ¾î¶² ¿ªÇÒÀ» ÇÏ´ÂÁö °£·«È÷ ¼³¸íÇÏ¸é,
-// 1. Å¬·¡½º Á¤ÀÇ¿¡¼­ virtual Å°¿öµå°¡ ÇÏ³ª¶óµµ Á¸ÀçÇÏ¸é ±× Å¬·¡½º¿¡ ´ëÇØ virtual Å×ÀÌºíÀÌ »ý¼ºµÈ´Ù.
-// 2. ÀÌ Å×ÀÌºí¿¡´Â virtual Å°¿öµå·Î ¼±¾ðµÈ ¸â¹ö ÇÔ¼öµéÀÇ ÁÖ¼Ò°¡ ÀúÀåµÈ´Ù.
-// 3. ÀÌ Å×ÀÌºíÀ» °¡¸®Å°´Â Æ÷ÀÎÅÍ°ªÀÌ ÇØ´ç Å¬·¡½º¸¦ »ý¼ºÇÒ ¶§ ¼û°ÜÁø ¸â¹öº¯¼ö·Î Ãß°¡µÈ´Ù.
-// 4. »ý¼ºµÈ ÀÎ½ºÅÏ½º°¡ ÇöÀç ºÎ¸ðÅ¬·¡½ºÀÇ Æ÷ÀÎÅÍÅ¸ÀÔÀ¸·Î ÀúÀåµÇ¾î ÀÖ´Ù°í ÇÏ´õ¶óµµ,
-//    ±× ¼û°ÜÁø ¸â¹öº¯¼öÀÇ Æ÷ÀÎÅÍ°ªÀº »ý¼º½ÃÀÇ Å¬·¡½º(¿ø·¡ ÀÚ½ÅÀÇ Å¬·¡½º)¿¡ ´ëÇÑ virtual Å×ÀÌºíÀ» °¡¸®Å°°í ÀÖ±â ¶§¹®¿¡
-//    virtual Å°¿öµå°¡ ÀÖ´Â ÇÔ¼ö¸¦ È£ÃâÇÏ´Â °æ¿ì ±× Å×ÀÌºíÀ» ÂüÁ¶ÇÏ¿© ¿ø·¡ ÀÚ½ÅÀÇ ÇÔ¼ö¸¦ Ã£¾Æ¼­ È£ÃâÇÒ ¼ö ÀÖ°Ô µÈ´Ù.
-// Âü°í ÀÌ¹ÌÁö: https://candide-guevara.github.io/diagram/cpp/2015/07/07/cpp-virtual-table.html
-// À§ ÀÌ¹ÌÁö¿¡¼­ Object1Àº new BaseClass()·Î »ý¼ºµÆ°í, Object2´Â new DerivedClass()·Î »ý¼ºµÆ´Ù°í º¸¸é µÈ´Ù.
+ï»¿#pragma once
+// [virtual í‚¤ì›Œë“œì˜ ì˜ë¯¸]
+// ì–´ë–¤ í´ëž˜ìŠ¤ë“¤ì„ ì„œë¡œ ìƒì†ê´€ê³„ì— ë†“ì„ ë•Œ virtual í‚¤ì›Œë“œê°€ ì–´ë–¤ ì—­í• ì„ í•˜ëŠ”ì§€ ê°„ëžµížˆ ì„¤ëª…í•˜ë©´,
+// 1. í´ëž˜ìŠ¤ ì •ì˜ì—ì„œ virtual í‚¤ì›Œë“œê°€ í•˜ë‚˜ë¼ë„ ì¡´ìž¬í•˜ë©´ ê·¸ í´ëž˜ìŠ¤ì— ëŒ€í•´ virtual í…Œì´ë¸”ì´ ìƒì„±ëœë‹¤.
+// 2. ì´ í…Œì´ë¸”ì—ëŠ” virtual í‚¤ì›Œë“œë¡œ ì„ ì–¸ëœ ë©¤ë²„ í•¨ìˆ˜ë“¤ì˜ ì£¼ì†Œê°€ ì €ìž¥ëœë‹¤.
+// 3. ì´ í…Œì´ë¸”ì„ ê°€ë¦¬í‚¤ëŠ” í¬ì¸í„°ê°’ì´ í•´ë‹¹ í´ëž˜ìŠ¤ë¥¼ ìƒì„±í•  ë•Œ ìˆ¨ê²¨ì§„ ë©¤ë²„ë³€ìˆ˜ë¡œ ì¶”ê°€ëœë‹¤.
+// 4. ìƒì„±ëœ ì¸ìŠ¤í„´ìŠ¤ê°€ í˜„ìž¬ ë¶€ëª¨í´ëž˜ìŠ¤ì˜ í¬ì¸í„°íƒ€ìž…ìœ¼ë¡œ ì €ìž¥ë˜ì–´ ìžˆë‹¤ê³  í•˜ë”ë¼ë„,
+//    ê·¸ ìˆ¨ê²¨ì§„ ë©¤ë²„ë³€ìˆ˜ì˜ í¬ì¸í„°ê°’ì€ ìƒì„±ì‹œì˜ í´ëž˜ìŠ¤(ì›ëž˜ ìžì‹ ì˜ í´ëž˜ìŠ¤)ì— ëŒ€í•œ virtual í…Œì´ë¸”ì„ ê°€ë¦¬í‚¤ê³  ìžˆê¸° ë•Œë¬¸ì—
+//    virtual í‚¤ì›Œë“œê°€ ìžˆëŠ” í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•˜ëŠ” ê²½ìš° ê·¸ í…Œì´ë¸”ì„ ì°¸ì¡°í•˜ì—¬ ì›ëž˜ ìžì‹ ì˜ í•¨ìˆ˜ë¥¼ ì°¾ì•„ì„œ í˜¸ì¶œí•  ìˆ˜ ìžˆê²Œ ëœë‹¤.
+// ì°¸ê³  ì´ë¯¸ì§€: https://candide-guevara.github.io/diagram/cpp/2015/07/07/cpp-virtual-table.html
+// ìœ„ ì´ë¯¸ì§€ì—ì„œ Object1ì€ new BaseClass()ë¡œ ìƒì„±ëê³ , Object2ëŠ” new DerivedClass()ë¡œ ìƒì„±ëë‹¤ê³  ë³´ë©´ ëœë‹¤.
 class Object
 {
 public:
-    // Å¬·¡½º ³»ºÎ¿¡ ¶Ç´Ù¸¥ Å¬·¡½º³ª enum µîÀ» Á¤ÀÇÇÒ ¼ö ÀÖ´Ù.
-    // ÀÌ·¸°Ô ³»ºÎ¿¡ Á¤ÀÇÇÑ Å¸ÀÔÀº ±× »óÀ§Å¸ÀÔÀÇ ÀÌ¸§°ø°£ ³»¿¡ µé¾î°£´Ù.
-    // Áï, ¾Æ·¡ÀÇ DirectionÀÌ¶ó´Â enumÀº Object ³»¿¡¼­´Â Direction:: À¸·Î »ç¿ë °¡´ÉÇÏ°í,
-    // Object ¿ÜºÎ¿¡¼­´Â Object::Direction:: À¸·Î »ç¿ëÇØ¾ß ÇÑ´Ù.
-    // ÀÌ·¸°Ô ÇÏ´Â °ÍÀÇ ÀÌÁ¡Àº, ¸¸¾à¿¡ ÀÌ·± ±â´ÉÀÌ ¾ø´Ù¸é ÀÌ¸§À» ÁöÀ» ¶§¸¶´Ù ¸Å¹ø °°Àº ÀÇ¹Ì¿©µµ
-    // ÀÌ¸§ÀÌ Áßº¹µÇÁö ¾Êµµ·Ï ÀÌ¸§À» Áö¾î¾ßÇØ¼­ ±æ¾îÁö°Ô µÉÅÙµ¥ ±»ÀÌ ±×·²ÇÊ¿ä°¡ ¾ø°Ô ÇØÁÖ´Â °ÍÀÌ´Ù.
-    // ¿¹¸¦µé¾î, class A¿Í class B¿¡¼­ °¢°¢ TypeÀÌ¶ó´Â enumÀ» Á¤ÀÇÇÏ°íÀÚ ÇÑ´Ù¸é,
-    // ³»ºÎ¿¡¼­´Â °£´ÜÇÏ°Ô TypeÀ¸·Î ¾²°í ¿ÜºÎ¿¡¼­ Á¢±ÙÇÒ ¶§¿¡¸¸ A::Type Ã³·³ ¹üÀ§¸¦ ÁöÁ¤ÇØÁÖ¸é µÇ´Â °Í.
-    // ÀÌ·¯ÇÑ ±â´ÉÀÌ ¾ø´Ù¸é TypeForA, TypeForB µî Ç×»ó °ãÄ¡Áö ¾Ê´Â ÀÌ¸§À» Áö¾î¾ß¸¸ ÇÑ´Ù.
+    // í´ëž˜ìŠ¤ ë‚´ë¶€ì— ë˜ë‹¤ë¥¸ í´ëž˜ìŠ¤ë‚˜ enum ë“±ì„ ì •ì˜í•  ìˆ˜ ìžˆë‹¤.
+    // ì´ë ‡ê²Œ ë‚´ë¶€ì— ì •ì˜í•œ íƒ€ìž…ì€ ê·¸ ìƒìœ„íƒ€ìž…ì˜ ì´ë¦„ê³µê°„ ë‚´ì— ë“¤ì–´ê°„ë‹¤.
+    // ì¦‰, ì•„ëž˜ì˜ Directionì´ë¼ëŠ” enumì€ Object ë‚´ì—ì„œëŠ” Direction:: ìœ¼ë¡œ ì‚¬ìš© ê°€ëŠ¥í•˜ê³ ,
+    // Object ì™¸ë¶€ì—ì„œëŠ” Object::Direction:: ìœ¼ë¡œ ì‚¬ìš©í•´ì•¼ í•œë‹¤.
+    // ì´ë ‡ê²Œ í•˜ëŠ” ê²ƒì˜ ì´ì ì€, ë§Œì•½ì— ì´ëŸ° ê¸°ëŠ¥ì´ ì—†ë‹¤ë©´ ì´ë¦„ì„ ì§€ì„ ë•Œë§ˆë‹¤ ë§¤ë²ˆ ê°™ì€ ì˜ë¯¸ì—¬ë„
+    // ì´ë¦„ì´ ì¤‘ë³µë˜ì§€ ì•Šë„ë¡ ì´ë¦„ì„ ì§€ì–´ì•¼í•´ì„œ ê¸¸ì–´ì§€ê²Œ ë í…ë° êµ³ì´ ê·¸ëŸ´í•„ìš”ê°€ ì—†ê²Œ í•´ì£¼ëŠ” ê²ƒì´ë‹¤.
+    // ì˜ˆë¥¼ë“¤ì–´, class Aì™€ class Bì—ì„œ ê°ê° Typeì´ë¼ëŠ” enumì„ ì •ì˜í•˜ê³ ìž í•œë‹¤ë©´,
+    // ë‚´ë¶€ì—ì„œëŠ” ê°„ë‹¨í•˜ê²Œ Typeìœ¼ë¡œ ì“°ê³  ì™¸ë¶€ì—ì„œ ì ‘ê·¼í•  ë•Œì—ë§Œ A::Type ì²˜ëŸ¼ ë²”ìœ„ë¥¼ ì§€ì •í•´ì£¼ë©´ ë˜ëŠ” ê²ƒ.
+    // ì´ëŸ¬í•œ ê¸°ëŠ¥ì´ ì—†ë‹¤ë©´ TypeForA, TypeForB ë“± í•­ìƒ ê²¹ì¹˜ì§€ ì•ŠëŠ” ì´ë¦„ì„ ì§€ì–´ì•¼ë§Œ í•œë‹¤.
     
-    // ±×¸®°í ¾Æ·¡ÀÇ Å¸ÀÔÀÌ ±×³É enumÀÌ ¾Æ´Ï¶ó enum class Å¸ÀÔÀÎµ¥ ÀÌ µÑÀÇ Â÷ÀÌ¸¦ °£·«È÷ ¼³¸íÇÏ¸é,
-    // enumÀº ÀÌ¸§°ø°£ÀÌ ¾ø°í(Àü¿ªÀûÀÌ°í), enum class´Â ÀÌ¸§°ø°£ÀÌ ºÎ¿©µÈ´Ù´Â Â÷ÀÌ°¡ ÀÖ´Ù.
-    // ¿¹¸¦µé¾î, ¾Æ·¡ÄÚµå¸¦ ±×³É enumÀ¸·Î Á¤ÀÇÇßÀ¸¸é, »ç¿ëÇÒ ¶§ Direction::À» ¾ÈºÙÈ÷°í »ç¿ëÇÏ°Ô µÇ¸ç,
-    // ±×·¯¸é À§¿¡¼­ ¼³¸íÇÑ °Í°ú °°ÀÌ ÀÌ¸§ Áþ±â°¡ ±î´Ù·Î¿öÁø´Ù. (¸ðµç ´Ù¸¥ enumµé°úµµ °ãÄ¡Áö ¾Ê°ÔÇØ¾ßÇÏ±â ¶§¹®(UP, DOWN µîÀÌ))
+    // ê·¸ë¦¬ê³  ì•„ëž˜ì˜ íƒ€ìž…ì´ ê·¸ëƒ¥ enumì´ ì•„ë‹ˆë¼ enum class íƒ€ìž…ì¸ë° ì´ ë‘˜ì˜ ì°¨ì´ë¥¼ ê°„ëžµížˆ ì„¤ëª…í•˜ë©´,
+    // enumì€ ì´ë¦„ê³µê°„ì´ ì—†ê³ (ì „ì—­ì ì´ê³ ), enum classëŠ” ì´ë¦„ê³µê°„ì´ ë¶€ì—¬ëœë‹¤ëŠ” ì°¨ì´ê°€ ìžˆë‹¤.
+    // ì˜ˆë¥¼ë“¤ì–´, ì•„ëž˜ì½”ë“œë¥¼ ê·¸ëƒ¥ enumìœ¼ë¡œ ì •ì˜í–ˆìœ¼ë©´, ì‚¬ìš©í•  ë•Œ Direction::ì„ ì•ˆë¶™ížˆê³  ì‚¬ìš©í•˜ê²Œ ë˜ë©°,
+    // ê·¸ëŸ¬ë©´ ìœ„ì—ì„œ ì„¤ëª…í•œ ê²ƒê³¼ ê°™ì´ ì´ë¦„ ì§“ê¸°ê°€ ê¹Œë‹¤ë¡œì›Œì§„ë‹¤. (ëª¨ë“  ë‹¤ë¥¸ enumë“¤ê³¼ë„ ê²¹ì¹˜ì§€ ì•Šê²Œí•´ì•¼í•˜ê¸° ë•Œë¬¸(UP, DOWN ë“±ì´))
     enum class Direction
     {
         UP,
@@ -49,17 +49,17 @@ public:
     void            SetX(float _x) { m_X = _x; }
     void            SetY(float _y) { m_Y = _y; }
 
-    // ¹æÇâ°ú °Å¸®¸¦ ÀÎÀÚ·Î ¹Þ¾Æ¼­ ÀÌµ¿À» ¼öÇàÇÏ°í,
-    // ½ÇÁ¦·Î ÀÌµ¿À» Çß´ÂÁö ¿©ºÎ¸¦ bool°ªÀ¸·Î ¹ÝÈ¯ÇÏ´Â ÇÔ¼ö
+    // ë°©í–¥ê³¼ ê±°ë¦¬ë¥¼ ì¸ìžë¡œ ë°›ì•„ì„œ ì´ë™ì„ ìˆ˜í–‰í•˜ê³ ,
+    // ì‹¤ì œë¡œ ì´ë™ì„ í–ˆëŠ”ì§€ ì—¬ë¶€ë¥¼ boolê°’ìœ¼ë¡œ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
     bool            Move(Direction _dir, float _distance);
 
-    // private: ¹üÀ§´Â ¿ÂÀüÈ÷ º» Å¬·¡½º ³»¿¡¼­¸¸ Á¢±ÙÀÌ °¡´ÉÇÏ±â ¶§¹®¿¡
-    // protected: ¹üÀ§·Î º¯°æÇÏ¿´´Ù. ÀÌ ¹üÀ§´Â ÀÚ½Ä Å¬·¡½º¿¡¼­µµ Á¢±ÙÀÌ °¡´ÉÇÑ ¹üÀ§ÀÌ´Ù.
+    // private: ë²”ìœ„ëŠ” ì˜¨ì „ížˆ ë³¸ í´ëž˜ìŠ¤ ë‚´ì—ì„œë§Œ ì ‘ê·¼ì´ ê°€ëŠ¥í•˜ê¸° ë•Œë¬¸ì—
+    // protected: ë²”ìœ„ë¡œ ë³€ê²½í•˜ì˜€ë‹¤. ì´ ë²”ìœ„ëŠ” ìžì‹ í´ëž˜ìŠ¤ì—ì„œë„ ì ‘ê·¼ì´ ê°€ëŠ¥í•œ ë²”ìœ„ì´ë‹¤.
 protected:
-    // ·»´õ¸µµÉ °´Ã¼´Â ÀÚ½ÅÀÇ ¸ð¾çÀ» ÇÏ³ªÀÇ ¹®ÀÚ(wchar_t)·Î ³ªÅ¸³»¸ç,
-    // x, y ÁÂÇ¥¸¦ ÅëÇØ ÇöÀç À§Ä¡¸¦ ¾Ë ¼ö ÀÖ°Ô ÇÑ´Ù.
-    // cmd°ü·Ã ¶óÀÌºê·¯¸® ÇÔ¼ö¿¡¼­ ÁÂÇ¥°ªµéÀ» shortÅ¸ÀÔÀ¸·Î ´Ù·ç±â ¶§¹®¿¡
-    // ¿©±â¼­µµ shortÅ¸ÀÔÀ¸·Î ÁÂÇ¥º¯¼ö¸¦ ÁöÁ¤ÇÑ´Ù.
+    // ë Œë”ë§ë  ê°ì²´ëŠ” ìžì‹ ì˜ ëª¨ì–‘ì„ í•˜ë‚˜ì˜ ë¬¸ìž(wchar_t)ë¡œ ë‚˜íƒ€ë‚´ë©°,
+    // x, y ì¢Œí‘œë¥¼ í†µí•´ í˜„ìž¬ ìœ„ì¹˜ë¥¼ ì•Œ ìˆ˜ ìžˆê²Œ í•œë‹¤.
+    // cmdê´€ë ¨ ë¼ì´ë¸ŒëŸ¬ë¦¬ í•¨ìˆ˜ì—ì„œ ì¢Œí‘œê°’ë“¤ì„ shortíƒ€ìž…ìœ¼ë¡œ ë‹¤ë£¨ê¸° ë•Œë¬¸ì—
+    // ì—¬ê¸°ì„œë„ shortíƒ€ìž…ìœ¼ë¡œ ì¢Œí‘œë³€ìˆ˜ë¥¼ ì§€ì •í•œë‹¤.
     wchar_t         m_Shape;
     float           m_X;
     float           m_Y;

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 class Object;
 class SnakeBody;
 
@@ -31,6 +31,6 @@ private:
     bool                m_IsOn;
     std::list<Object*>  m_ObjectList;
 
-    // ³×ÀÌ¹Ö °ü½À Áß¿¡ Æ÷ÀÎÅÍº¯¼ö´Â ¾Õ¿¡ p¸¦ ºÙ¿©ÁÖ´Â °ü½ÀÀÌ ÀÖ½À´Ï´Ù.
+    // ë„¤ì´ë° ê´€ìŠµ ì¤‘ì— í¬ì¸í„°ë³€ìˆ˜ëŠ” ì•ì— pë¥¼ ë¶™ì—¬ì£¼ëŠ” ê´€ìŠµì´ ìˆìŠµë‹ˆë‹¤.
     SnakeBody*          m_pSnakeBody;
 };

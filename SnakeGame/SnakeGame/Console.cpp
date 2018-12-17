@@ -1,20 +1,20 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Console.h"
 
 
-// ±âº»ÀûÀ¸·Î Å¬·¡½ºÀÇ ¸ðµç ¸â¹öº¯¼ö´Â »ý¼ºÀÚ¿¡¼­ ¾Æ·¡¿Í °°ÀÌ ÃÊ±âÈ­ÇØÁÖ¾î¾ß ÇÑ´Ù.
-// ±×·¸Áö ¾ÊÀ¸¸é °ªÀÌ ´ëÀÔµÇÁö ¾ÊÀº »óÅÂ·Î »ç¿ëÇÒ À§ÇèÀÌ ÀÖ°í,
-// ±×·± °æ¿ì '¾²·¹±â°ª'ÀÌ¶ó°í ºÒ¸®´Â ºñÁ¤»óÀûÀÎ °ªÀ¸·Î »ç¿ëµÉ ¼ö ÀÖ±â ¶§¹®ÀÌ´Ù.
+// ê¸°ë³¸ì ìœ¼ë¡œ í´ëž˜ìŠ¤ì˜ ëª¨ë“  ë©¤ë²„ë³€ìˆ˜ëŠ” ìƒì„±ìžì—ì„œ ì•„ëž˜ì™€ ê°™ì´ ì´ˆê¸°í™”í•´ì£¼ì–´ì•¼ í•œë‹¤.
+// ê·¸ë ‡ì§€ ì•Šìœ¼ë©´ ê°’ì´ ëŒ€ìž…ë˜ì§€ ì•Šì€ ìƒíƒœë¡œ ì‚¬ìš©í•  ìœ„í—˜ì´ ìžˆê³ ,
+// ê·¸ëŸ° ê²½ìš° 'ì“°ë ˆê¸°ê°’'ì´ë¼ê³  ë¶ˆë¦¬ëŠ” ë¹„ì •ìƒì ì¸ ê°’ìœ¼ë¡œ ì‚¬ìš©ë  ìˆ˜ ìžˆê¸° ë•Œë¬¸ì´ë‹¤.
 Console::Console()
-    : m_ScreenWidth(0)      // Ã¹¹øÂ° º¯¼ö´Â : ´ÙÀ½¿¡
-    , m_ScreenHeight(0)     // ´ÙÀ½ºÎÅÍ´Â , ´ÙÀ½¿¡ ¾´´Ù.
-    , m_BackBufferIdx(0)    // () ¾È¿¡ ÃÊ±âÈ­ÇÒ °ªÀ» ³Ö´Â´Ù.
+    : m_ScreenWidth(0)      // ì²«ë²ˆì§¸ ë³€ìˆ˜ëŠ” : ë‹¤ìŒì—
+    , m_ScreenHeight(0)     // ë‹¤ìŒë¶€í„°ëŠ” , ë‹¤ìŒì— ì“´ë‹¤.
+    , m_BackBufferIdx(0)    // () ì•ˆì— ì´ˆê¸°í™”í•  ê°’ì„ ë„£ëŠ”ë‹¤.
 {
-    // ¸â¹öº¯¼ö°¡ ¹è¿­ÀÎ °æ¿ì À§¿¡¼­ ÃÊ±âÈ­ ÇÏÁö ¾Ê°í,
-    // ¾Æ·¡¿Í °°ÀÌ °¢ ¹è¿­ Ç×¸ñµéÀ» Á÷Á¢ ÃÊ±âÈ­ÇØÁÖ¾î¾ß ÇÑ´Ù.
-    // nullptrÀÌ¶õ, Æ÷ÀÎÅÍº¯¼ö¿¡ ´ëÇÑ Á¦·Î°ªÀÌ¶ó°í º¸¸é µÇ¸ç,
-    // ¾Æ·¡ º¯¼ö´Â Å¸ÀÔÀº HANDLE Å¸ÀÔÀÌÁö¸¸, ½ÇÁ¦·Ð ¾î¶² °´Ã¼ÀÇ Æ÷ÀÎÅÍ Å¸ÀÔÀÌ´Ù.
-    // Áï, HANDLE Å¸ÀÔÀº Æ÷ÀÎÅÍ Å¸ÀÔ.
+    // ë©¤ë²„ë³€ìˆ˜ê°€ ë°°ì—´ì¸ ê²½ìš° ìœ„ì—ì„œ ì´ˆê¸°í™” í•˜ì§€ ì•Šê³ ,
+    // ì•„ëž˜ì™€ ê°™ì´ ê° ë°°ì—´ í•­ëª©ë“¤ì„ ì§ì ‘ ì´ˆê¸°í™”í•´ì£¼ì–´ì•¼ í•œë‹¤.
+    // nullptrì´ëž€, í¬ì¸í„°ë³€ìˆ˜ì— ëŒ€í•œ ì œë¡œê°’ì´ë¼ê³  ë³´ë©´ ë˜ë©°,
+    // ì•„ëž˜ ë³€ìˆ˜ëŠ” íƒ€ìž…ì€ HANDLE íƒ€ìž…ì´ì§€ë§Œ, ì‹¤ì œë¡  ì–´ë–¤ ê°ì²´ì˜ í¬ì¸í„° íƒ€ìž…ì´ë‹¤.
+    // ì¦‰, HANDLE íƒ€ìž…ì€ í¬ì¸í„° íƒ€ìž….
     m_ScreenBuffer[0] = nullptr;
     m_ScreenBuffer[1] = nullptr;
 }
@@ -25,22 +25,22 @@ Console::~Console()
 
 void Console::Init()
 {
-    // cmdÃ¢ Å©±â ¼³Á¤ (30°³ÀÇ ÁÙ(¼¼·Î), 90°³ÀÇ ÄÃ·³(°¡·Î))
-    // cmd¿¡¼­ ½ÇÁ¦ °Å¸®´Â °¡·Î 2°³°¡ ¼¼·Î1°³¿Í µ¿ÀÏÇÑ Á¡ Âü°í. (¹®ÀÚÀÇ °¡·ÎÆøÀÌ ¼¼·ÎÆøÀÇ Àý¹ÝÀÌ±â ¶§¹®)
+    // cmdì°½ í¬ê¸° ì„¤ì • (30ê°œì˜ ì¤„(ì„¸ë¡œ), 90ê°œì˜ ì»¬ëŸ¼(ê°€ë¡œ))
+    // cmdì—ì„œ ì‹¤ì œ ê±°ë¦¬ëŠ” ê°€ë¡œ 2ê°œê°€ ì„¸ë¡œ1ê°œì™€ ë™ì¼í•œ ì  ì°¸ê³ . (ë¬¸ìžì˜ ê°€ë¡œí­ì´ ì„¸ë¡œí­ì˜ ì ˆë°˜ì´ê¸° ë•Œë¬¸)
     system("mode con: lines=30 cols=90");
     m_ScreenWidth = 90;
     m_ScreenHeight = 30;
 
-    // cmd¿¡¼­ Ä¿¼­ ±ô¹Ú°Å¸®´Â °ÍÀ» Á¦°ÅÇÏ±â À§ÇÑ ¿É¼Ç ¼ÂÆÃ
+    // cmdì—ì„œ ì»¤ì„œ ê¹œë°•ê±°ë¦¬ëŠ” ê²ƒì„ ì œê±°í•˜ê¸° ìœ„í•œ ì˜µì…˜ ì…‹íŒ…
     CONSOLE_CURSOR_INFO cci;
     cci.dwSize = 1;
     cci.bVisible = FALSE;
 
-    // 2°³ÀÇ ½ºÅ©¸°¹öÆÛ¸¦ »ý¼ºÇÏ¿© ÃÊ±âÈ­ÇÑ´Ù. (´õºí ¹öÆÛ¸µ ±¸ÇöÀ» À§ÇØ)
-    //  [´õºí ¹öÆÛ¸µ]
-    //    - °´Ã¼°¡ ÇÏ³ª¾¿ ±×·ÁÁö´Â °úÁ¤À» ½Ç½Ã°£À¸·Î º¸¿©ÁÖÁö ¾Ê°í
-    //      ´Ù ±×·ÁÁø ÈÄ ÇÑ¹ø¿¡ Ç¥½ÃµÇµµ·Ï ÇÏ¿© È­¸é¿¡ ÀÜ»óÀÌ³ª ±ô¹ÚÀÓ µîÀÌ
-    //      »ý±âÁö ¾Êµµ·Ï ÇÏ´Â ±âº»ÀûÀÎ ·»´õ¸µ ±â¹ýÀÌ´Ù.
+    // 2ê°œì˜ ìŠ¤í¬ë¦°ë²„í¼ë¥¼ ìƒì„±í•˜ì—¬ ì´ˆê¸°í™”í•œë‹¤. (ë”ë¸” ë²„í¼ë§ êµ¬í˜„ì„ ìœ„í•´)
+    //  [ë”ë¸” ë²„í¼ë§]
+    //    - ê°ì²´ê°€ í•˜ë‚˜ì”© ê·¸ë ¤ì§€ëŠ” ê³¼ì •ì„ ì‹¤ì‹œê°„ìœ¼ë¡œ ë³´ì—¬ì£¼ì§€ ì•Šê³ 
+    //      ë‹¤ ê·¸ë ¤ì§„ í›„ í•œë²ˆì— í‘œì‹œë˜ë„ë¡ í•˜ì—¬ í™”ë©´ì— ìž”ìƒì´ë‚˜ ê¹œë°•ìž„ ë“±ì´
+    //      ìƒê¸°ì§€ ì•Šë„ë¡ í•˜ëŠ” ê¸°ë³¸ì ì¸ ë Œë”ë§ ê¸°ë²•ì´ë‹¤.
     DWORD accessFlag = GENERIC_READ | GENERIC_WRITE;
     DWORD bufferFlag = CONSOLE_TEXTMODE_BUFFER;
     m_ScreenBuffer[0] = CreateConsoleScreenBuffer(accessFlag, 0, nullptr, bufferFlag, nullptr);
@@ -48,26 +48,26 @@ void Console::Init()
     SetConsoleCursorInfo(m_ScreenBuffer[0], &cci);
     SetConsoleCursorInfo(m_ScreenBuffer[1], &cci);
 
-    // 0¹ø ¹öÆÛ¸¦ È°¼ºÈ­ ÇÏ°í(ÇöÀç º¸ÀÌ´Â ¹öÆÛ), ¹é¹öÆÛ ÀÎµ¦½º¸¦ 1·Î ÁöÁ¤ÇÑ´Ù.(´ÙÀ½¿¡ ±×·ÁÁú ¹öÆÛ)
-    //  [¹é¹öÆÛ]
-    //    - ´õºí ¹öÆÛ¸µ¿¡¼­ ÇöÀç È­¸é¿¡ ³ëÃâµÇÁö ¾Ê´Â ¹öÆÛ(Back Buffer)¸¦ ÀÇ¹ÌÇÑ´Ù.
-    //  [¹öÆÛ]
-    //    - ÇÁ·Î±×·¡¹Ö¿¡¼­ ¹öÆÛ¶õ, ¾î¶² ÀÛ¾÷À» ÇÏ±â À§ÇØ ¹Ì¸® ¸¶·Ã(ÇÒ´ç)ÇØ³õ´Â ¸Þ¸ð¸® °ø°£À» ÀÇ¹ÌÇÑ´Ù.
+    // 0ë²ˆ ë²„í¼ë¥¼ í™œì„±í™” í•˜ê³ (í˜„ìž¬ ë³´ì´ëŠ” ë²„í¼), ë°±ë²„í¼ ì¸ë±ìŠ¤ë¥¼ 1ë¡œ ì§€ì •í•œë‹¤.(ë‹¤ìŒì— ê·¸ë ¤ì§ˆ ë²„í¼)
+    //  [ë°±ë²„í¼]
+    //    - ë”ë¸” ë²„í¼ë§ì—ì„œ í˜„ìž¬ í™”ë©´ì— ë…¸ì¶œë˜ì§€ ì•ŠëŠ” ë²„í¼(Back Buffer)ë¥¼ ì˜ë¯¸í•œë‹¤.
+    //  [ë²„í¼]
+    //    - í”„ë¡œê·¸ëž˜ë°ì—ì„œ ë²„í¼ëž€, ì–´ë–¤ ìž‘ì—…ì„ í•˜ê¸° ìœ„í•´ ë¯¸ë¦¬ ë§ˆë ¨(í• ë‹¹)í•´ë†“ëŠ” ë©”ëª¨ë¦¬ ê³µê°„ì„ ì˜ë¯¸í•œë‹¤.
     SetConsoleActiveScreenBuffer(m_ScreenBuffer[0]);
     m_BackBufferIdx = 1;
 }
 
 void Console::Release()
 {
-    // »ç¿ë¿Ï·áÇÑ ¹öÆÛ´Â ¹Ýµå½Ã ÇÚµéÀ» ´Ý¾ÆÁØ´Ù.
+    // ì‚¬ìš©ì™„ë£Œí•œ ë²„í¼ëŠ” ë°˜ë“œì‹œ í•¸ë“¤ì„ ë‹«ì•„ì¤€ë‹¤.
     CloseHandle(m_ScreenBuffer[0]);
     CloseHandle(m_ScreenBuffer[1]);
 }
 
 void Console::Clear()
 {
-    // ¹é¹öÆÛ ÀüÃ¼¸¦ ' '¹®ÀÚ·Î Ã¤¿î´Ù.
-    // Áï, ¾Æ¹« ±ÛÀÚµµ º¸ÀÌÁö ¾Ê°Ô Áö¿öÁÖ´Â µ¿ÀÛ.
+    // ë°±ë²„í¼ ì „ì²´ë¥¼ ' 'ë¬¸ìžë¡œ ì±„ìš´ë‹¤.
+    // ì¦‰, ì•„ë¬´ ê¸€ìžë„ ë³´ì´ì§€ ì•Šê²Œ ì§€ì›Œì£¼ëŠ” ë™ìž‘.
     DWORD dw;
     DWORD screenSize = m_ScreenWidth * m_ScreenHeight;
     FillConsoleOutputCharacter(m_ScreenBuffer[m_BackBufferIdx], L' ', screenSize, { 0, 0 }, &dw);
@@ -75,9 +75,9 @@ void Console::Clear()
 
 void Console::SwapBuffer()
 {
-    // ÇöÀçÀÇ ¹é¹öÆÛ¸¦ È­¸é¿¡ ³ëÃâµÇ´Â ½ºÅ©¸°¹öÆÛ·Î ÁöÁ¤ÇÏ°í, ¹é¹öÆÛ ÀÎµ¦½º¸¦ ±³Ã¼ÇÑ´Ù.
-    // ÀÌ¸¦ÅëÇØ ÇöÀç ÇÁ·¹ÀÓ¿¡¼­ ¹é¹öÆÛ¿¡ PrintÇÑ ¸ðµç ±ÛÀÚµéÀÌ ½ºÅ©¸°¿¡ ¶ç¿öÁø´Ù. (·»´õ¸µ)
-    // ÀÌÈÄ ¿ø·¡ Ç¥½ÃµÇ°í ÀÖ´ø ¹öÆÛ´Â ¹é¹öÆÛ·Î ÀüÈ¯µÇ°í, ´ÙÀ½ ÇÁ·¹ÀÓ¿¡¼­ ÇØ´ç ¹öÆÛ¿¡ ±×¸®°Ô µÈ´Ù.
+    // í˜„ìž¬ì˜ ë°±ë²„í¼ë¥¼ í™”ë©´ì— ë…¸ì¶œë˜ëŠ” ìŠ¤í¬ë¦°ë²„í¼ë¡œ ì§€ì •í•˜ê³ , ë°±ë²„í¼ ì¸ë±ìŠ¤ë¥¼ êµì²´í•œë‹¤.
+    // ì´ë¥¼í†µí•´ í˜„ìž¬ í”„ë ˆìž„ì—ì„œ ë°±ë²„í¼ì— Printí•œ ëª¨ë“  ê¸€ìžë“¤ì´ ìŠ¤í¬ë¦°ì— ë„ì›Œì§„ë‹¤. (ë Œë”ë§)
+    // ì´í›„ ì›ëž˜ í‘œì‹œë˜ê³  ìžˆë˜ ë²„í¼ëŠ” ë°±ë²„í¼ë¡œ ì „í™˜ë˜ê³ , ë‹¤ìŒ í”„ë ˆìž„ì—ì„œ í•´ë‹¹ ë²„í¼ì— ê·¸ë¦¬ê²Œ ëœë‹¤.
     SetConsoleActiveScreenBuffer(m_ScreenBuffer[m_BackBufferIdx]);
     switch (m_BackBufferIdx)
     {
@@ -88,7 +88,7 @@ void Console::SwapBuffer()
 
 void Console::Print(wchar_t _shape, short _x, short _y)
 {
-    // ÇöÀçÀÇ ¹é¹öÆÛ¿¡¼­ Ä¿¼­¸¦ ÁöÁ¤ÇÑ À§Ä¡·Î ÀÌµ¿½ÃÅ°°í, ±× À§Ä¡¿¡ 1°³ÀÇ ±ÛÀÚ¸¦ WriteÇÑ´Ù.
+    // í˜„ìž¬ì˜ ë°±ë²„í¼ì—ì„œ ì»¤ì„œë¥¼ ì§€ì •í•œ ìœ„ì¹˜ë¡œ ì´ë™ì‹œí‚¤ê³ , ê·¸ ìœ„ì¹˜ì— 1ê°œì˜ ê¸€ìžë¥¼ Writeí•œë‹¤.
     DWORD dw;
     SetConsoleCursorPosition(m_ScreenBuffer[m_BackBufferIdx], { _x, _y });
     WriteConsole(m_ScreenBuffer[m_BackBufferIdx], &_shape, 1, &dw, nullptr);
@@ -96,12 +96,12 @@ void Console::Print(wchar_t _shape, short _x, short _y)
 
 void Console::PrintText(const std::wstring& _text, short _x, short _y)
 {
-    // À§¿Í µ¿ÀÏÇÏÁö¸¸, 1°³ÀÇ ±ÛÀÚ°¡ ¾Æ´Ñ ¿©·¯°³ÀÇ ±ÛÀÚ, Áï, ¹®ÀÚ¿­À» WriteÇÑ´Ù.
-    // std::wstring¿¡¼­ c_str()¸â¹öÇÔ¼ö´Â ÇØ´ç ½ºÆ®¸µÀÇ Ã¹¹øÂ° ±ÛÀÚÀÇ ÁÖ¼Ò¸¦ °¡Á®¿Â´Ù.
-    // Áï, À§ÀÇ &_shape¿Í µ¿ÀÏÇÏ°Ô WriteÇÒ ¹®ÀÚÀÇ ½ÃÀÛÁÖ¼Ò°¡ ³Ñ°ÜÁö°Ô µÇ°í, ±× ´ÙÀ½ ÀÎ¼öÀÎ
-    // _text.length()¸¦ ÅëÇØ ¾ó¸¸Å­ÀÇ ±æÀÌ¸¸Å­ ¹®ÀÚ¿­À» WriteÇÒÁö¸¦ ¾Ë·ÁÁÖ´Â °Í.
-    // ±âº»ÀûÀ¸·Î´Â À§ÀÇ Print()ÇÔ¼ö¸¸ ±¸ÇöÇØµµ µÇÁö¸¸, ¸Þ´º µî ÅØ½ºÆ® Á¤º¸¸¦ ÆíÇÏ°Ô Ãâ·ÂÇÏ·Á¸é
-    // ÀÌ·¯ÇÑ ¹®ÀÚ¿­ Ãâ·Â¿ë ÇÔ¼öµµ ±¸ÇöÇØ³õ´Â °ÍÀÌ ÁÁ´Ù.
+    // ìœ„ì™€ ë™ì¼í•˜ì§€ë§Œ, 1ê°œì˜ ê¸€ìžê°€ ì•„ë‹Œ ì—¬ëŸ¬ê°œì˜ ê¸€ìž, ì¦‰, ë¬¸ìžì—´ì„ Writeí•œë‹¤.
+    // std::wstringì—ì„œ c_str()ë©¤ë²„í•¨ìˆ˜ëŠ” í•´ë‹¹ ìŠ¤íŠ¸ë§ì˜ ì²«ë²ˆì§¸ ê¸€ìžì˜ ì£¼ì†Œë¥¼ ê°€ì ¸ì˜¨ë‹¤.
+    // ì¦‰, ìœ„ì˜ &_shapeì™€ ë™ì¼í•˜ê²Œ Writeí•  ë¬¸ìžì˜ ì‹œìž‘ì£¼ì†Œê°€ ë„˜ê²¨ì§€ê²Œ ë˜ê³ , ê·¸ ë‹¤ìŒ ì¸ìˆ˜ì¸
+    // _text.length()ë¥¼ í†µí•´ ì–¼ë§Œí¼ì˜ ê¸¸ì´ë§Œí¼ ë¬¸ìžì—´ì„ Writeí• ì§€ë¥¼ ì•Œë ¤ì£¼ëŠ” ê²ƒ.
+    // ê¸°ë³¸ì ìœ¼ë¡œëŠ” ìœ„ì˜ Print()í•¨ìˆ˜ë§Œ êµ¬í˜„í•´ë„ ë˜ì§€ë§Œ, ë©”ë‰´ ë“± í…ìŠ¤íŠ¸ ì •ë³´ë¥¼ íŽ¸í•˜ê²Œ ì¶œë ¥í•˜ë ¤ë©´
+    // ì´ëŸ¬í•œ ë¬¸ìžì—´ ì¶œë ¥ìš© í•¨ìˆ˜ë„ êµ¬í˜„í•´ë†“ëŠ” ê²ƒì´ ì¢‹ë‹¤.
     DWORD dw;
     SetConsoleCursorPosition(m_ScreenBuffer[m_BackBufferIdx], { _x, _y });
     WriteConsole(m_ScreenBuffer[m_BackBufferIdx], _text.c_str(), _text.length(), &dw, nullptr);
@@ -109,13 +109,13 @@ void Console::PrintText(const std::wstring& _text, short _x, short _y)
 
 RECT Console::GetBoundaryBox() const
 {
-    // ÇöÀç ÄÜ¼ÖÃ¢ÀÇ »óÇÏÁÂ¿ì ³¡ÁÂÇ¥, Áï, ¹Ù¿î´õ¸®¸¦ RECT¿¡ ´ã¾Æ ¹ÝÈ¯ÇÑ´Ù.
-    // ½ÇÁ¦ º¸¿©Áö´Â ±¸°£Àº 1Ä­¾¿ Àû±â ¶§¹®¿¡ -2, -1ÀÇ °è»êÀÌ Ãß°¡µÈ´Ù.
-    // °¡·ÎÁÂÇ¥°¡ -2ÀÎ °ÍÀº ¼¼·ÎÀÇ Àý¹Ý¸¸Å­ÀÇ ±æÀÌ¿©¼­ µ¿ÀÏÇÑ ±æÀÌ°¡ ÁÙ¾îµå·Á¸é 2¹è¿©¾ß ÇÏ±â ¶§¹®.
+    // í˜„ìž¬ ì½˜ì†”ì°½ì˜ ìƒí•˜ì¢Œìš° ëì¢Œí‘œ, ì¦‰, ë°”ìš´ë”ë¦¬ë¥¼ RECTì— ë‹´ì•„ ë°˜í™˜í•œë‹¤.
+    // ì‹¤ì œ ë³´ì—¬ì§€ëŠ” êµ¬ê°„ì€ 1ì¹¸ì”© ì ê¸° ë•Œë¬¸ì— -2, -1ì˜ ê³„ì‚°ì´ ì¶”ê°€ëœë‹¤.
+    // ê°€ë¡œì¢Œí‘œê°€ -2ì¸ ê²ƒì€ ì„¸ë¡œì˜ ì ˆë°˜ë§Œí¼ì˜ ê¸¸ì´ì—¬ì„œ ë™ì¼í•œ ê¸¸ì´ê°€ ì¤„ì–´ë“œë ¤ë©´ 2ë°°ì—¬ì•¼ í•˜ê¸° ë•Œë¬¸.
     RECT boundaryBox;
     boundaryBox.top = 0;
     boundaryBox.left = 0;
     boundaryBox.right = m_ScreenWidth - 2;
-    boundaryBox.bottom = m_ScreenHeight - 2; // ¾Æ·¡ ÇÑÁÙÀ» ºñ¿ì±â À§ÇØ -1 Ãß°¡(¸¶Áö¸· ÁÙÀº ¿À¸¥ÂÊ³¡ÀÌ Ç¥½ÃºÒ°¡)
+    boundaryBox.bottom = m_ScreenHeight - 2; // ì•„ëž˜ í•œì¤„ì„ ë¹„ìš°ê¸° ìœ„í•´ -1 ì¶”ê°€(ë§ˆì§€ë§‰ ì¤„ì€ ì˜¤ë¥¸ìª½ëì´ í‘œì‹œë¶ˆê°€)
     return boundaryBox;
 }

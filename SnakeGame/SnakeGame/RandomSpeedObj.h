@@ -1,14 +1,14 @@
-#pragma once
+ï»¿#pragma once
 #include "Object.h"
-// ¾î¶² Å¬·¡½º¸¦ »ó¼Ó ¹Ş´Â °æ¿ì ¾Æ·¡Ã³·³ : public ºÎ¸ğÅ¬·¡½º ¸¦ µÚ¿¡ ºÙ¿©ÁØ´Ù.
-// ±×¸®°í ¹İµå½Ã ¼Ò¸êÀÚ¿¡ virtual°¡ ºÙ¾î¾ß ÇÑ´Ù.
+// ì–´ë–¤ í´ë˜ìŠ¤ë¥¼ ìƒì† ë°›ëŠ” ê²½ìš° ì•„ë˜ì²˜ëŸ¼ : public ë¶€ëª¨í´ë˜ìŠ¤ ë¥¼ ë’¤ì— ë¶™ì—¬ì¤€ë‹¤.
+// ê·¸ë¦¬ê³  ë°˜ë“œì‹œ ì†Œë©¸ìì— virtualê°€ ë¶™ì–´ì•¼ í•œë‹¤.
 class RandomSpeedObj : public Object
 {
 public:
     RandomSpeedObj();
     virtual ~RandomSpeedObj();
 
-    // »ó¼Ó¹Ş´Â(¿À¹ö¶óÀÌµù) ÇÔ¼öµéÀº µÚ¿¡ override Å°¿öµå¸¦ ºÙ¿©ÁØ´Ù.
+    // ìƒì†ë°›ëŠ”(ì˜¤ë²„ë¼ì´ë”©) í•¨ìˆ˜ë“¤ì€ ë’¤ì— override í‚¤ì›Œë“œë¥¼ ë¶™ì—¬ì¤€ë‹¤.
     virtual void    Update() override;
     virtual void    Render() override;
 
@@ -16,7 +16,7 @@ private:
     float           m_XSpeed;
     float           m_YSpeed;
 
-	// ÇöÀç ÀÌµ¿¹æÇâÀ» ¿À¸¥ÂÊ/¿ŞÂÊ ±¸ºĞ, À§/¾Æ·¡ ±¸ºĞ ÇÏ±â À§ÇÑ º¯¼öÀÌ´Ù.
+	// í˜„ì¬ ì´ë™ë°©í–¥ì„ ì˜¤ë¥¸ìª½/ì™¼ìª½ êµ¬ë¶„, ìœ„/ì•„ë˜ êµ¬ë¶„ í•˜ê¸° ìœ„í•œ ë³€ìˆ˜ì´ë‹¤.
 	bool            m_IsRight;
 	bool            m_IsBottom;
 };

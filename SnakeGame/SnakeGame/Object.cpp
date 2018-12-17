@@ -1,10 +1,10 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Object.h"
 #include "Console.h"
 
 
 Object::Object()
-    : m_Shape(L' ') // ' 'ÀÌ ¾Æ´Ñ L' 'ÀÎ ÀÌÀ¯´Â, char°¡ ¾Æ´Ñ wchar_tÀÌ±â ¶§¹®.
+    : m_Shape(L' ') // ' 'ì´ ì•„ë‹Œ L' 'ì¸ ì´ìœ ëŠ”, charê°€ ì•„ë‹Œ wchar_tì´ê¸° ë•Œë¬¸.
     , m_X(0.f)
     , m_Y(0.f)
 {
@@ -20,8 +20,8 @@ void Object::Update()
 
 void Object::Render()
 {
-    // ÇöÀç ³» À§Ä¡(m_X, m_Y)¿¡ ³» ¸ð½À(m_Shape)À» ÄÜ¼ÖÀÌ ±×¸®µµ·Ï ÇÑ´Ù.
-	// m_X¸¦ 2¹è °öÇÏ´Â ÀÌÀ¯´Â cmd¿¡¼­ xÁÂÇ¥ ±æÀÌ°¡ yÁÂÇ¥ ±æÀÌÀÇ Àý¹ÝÀÌ±â ¶§¹®.
+    // í˜„ìž¬ ë‚´ ìœ„ì¹˜(m_X, m_Y)ì— ë‚´ ëª¨ìŠµ(m_Shape)ì„ ì½˜ì†”ì´ ê·¸ë¦¬ë„ë¡ í•œë‹¤.
+	// m_Xë¥¼ 2ë°° ê³±í•˜ëŠ” ì´ìœ ëŠ” cmdì—ì„œ xì¢Œí‘œ ê¸¸ì´ê°€ yì¢Œí‘œ ê¸¸ì´ì˜ ì ˆë°˜ì´ê¸° ë•Œë¬¸.
 	Console::GetInstance().Print(m_Shape, (short)(m_X * 2), (short)m_Y);
 }
 
@@ -29,8 +29,8 @@ bool Object::Move(Direction _dir, float _distance)
 {
     RECT boundaryBox = Console::GetInstance().GetBoundaryBox();
 
-	// cmd ÁÂÇ¥°èÀÎ boundartBox¸¦ ÀÎ°ÔÀÓ ÁÂÇ¥°è·Î º¯È¯ÇÏ¿© °è»êÇÏµµ·Ï ÇÑ´Ù.
-	// cmd ÁÂÇ¥°è¿¡¼± x°¡ yÀÇ ±æÀÌ°¡ ´Ù¸£±â ¶§¹®¿¡ ÀÎ°ÔÀÓ ÁÂÇ¥°è»ê °úÁ¤¿¡ ¹Ù·Î ¾²±â¿¡ ºÎÀûÀýÇÏ´Ù.
+	// cmd ì¢Œí‘œê³„ì¸ boundartBoxë¥¼ ì¸ê²Œìž„ ì¢Œí‘œê³„ë¡œ ë³€í™˜í•˜ì—¬ ê³„ì‚°í•˜ë„ë¡ í•œë‹¤.
+	// cmd ì¢Œí‘œê³„ì—ì„  xê°€ yì˜ ê¸¸ì´ê°€ ë‹¤ë¥´ê¸° ë•Œë¬¸ì— ì¸ê²Œìž„ ì¢Œí‘œê³„ì‚° ê³¼ì •ì— ë°”ë¡œ ì“°ê¸°ì— ë¶€ì ì ˆí•˜ë‹¤.
 	float minX = (float)boundaryBox.left / 2;
 	float maxX = (float)boundaryBox.right / 2;
 	float minY = (float)boundaryBox.top;
@@ -40,22 +40,22 @@ bool Object::Move(Direction _dir, float _distance)
     {
     case Direction::UP:
         {
-            // ÇöÀç yÁÂÇ¥°¡ À§ÂÊ °æ°è¼±º¸´Ù Å©¸é(¾Æ·¡ÂÊÀÌ¸é) À§ÂÊÀ¸·Î ÀÌµ¿ÀÌ °¡´ÉÇÏ´Ù.
+            // í˜„ìž¬ yì¢Œí‘œê°€ ìœ„ìª½ ê²½ê³„ì„ ë³´ë‹¤ í¬ë©´(ì•„ëž˜ìª½ì´ë©´) ìœ„ìª½ìœ¼ë¡œ ì´ë™ì´ ê°€ëŠ¥í•˜ë‹¤.
             if (m_Y > minY)
             {
-                // ¿äÃ»µÈ °Å¸®¸¸Å­ ÀÌµ¿À» ½ÃµµÇÏ¸ç, ¹Ù¿î´õ¸®¸¦ ³Ñ¾î¼­Áö ¾Êµµ·Ï Ã³¸®ÇÑ´Ù.
-                // std::max´Â µÎ°³ÀÇ ÀÎÀÚÁß ´õ Å«°ÍÀ» ¹ÝÈ¯ÇÏ´Â ÇÔ¼öÀÌ´Ù.
-                // Áï, m_Y - _distance °¡ ¹Ù¿î´õ¸®º¸´Ù ÀÛÀ¸¸é, ¹Ù¿î´õ¸®°ªÀ» ¹ÝÈ¯ÇÏ¿© ±× ÀÌÇÏ°ªÀÌ ³ª¿ÀÁö ¾Ê°ÔÇÑ´Ù.
+                // ìš”ì²­ëœ ê±°ë¦¬ë§Œí¼ ì´ë™ì„ ì‹œë„í•˜ë©°, ë°”ìš´ë”ë¦¬ë¥¼ ë„˜ì–´ì„œì§€ ì•Šë„ë¡ ì²˜ë¦¬í•œë‹¤.
+                // std::maxëŠ” ë‘ê°œì˜ ì¸ìžì¤‘ ë” í°ê²ƒì„ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜ì´ë‹¤.
+                // ì¦‰, m_Y - _distance ê°€ ë°”ìš´ë”ë¦¬ë³´ë‹¤ ìž‘ìœ¼ë©´, ë°”ìš´ë”ë¦¬ê°’ì„ ë°˜í™˜í•˜ì—¬ ê·¸ ì´í•˜ê°’ì´ ë‚˜ì˜¤ì§€ ì•Šê²Œí•œë‹¤.
                 m_Y = std::max<float>(m_Y - _distance, minY);
 
-                // ¿©±â¿¡ ¿Ô´Ù´Â°Ç ¾îÂîµÆµç ¾î´ÀÁ¤µµ ÀÌµ¿Àº ÇÑ´Ù´Â ¶æÀÌ´Ù.
+                // ì—¬ê¸°ì— ì™”ë‹¤ëŠ”ê±´ ì–´ì°Œëë“  ì–´ëŠì •ë„ ì´ë™ì€ í•œë‹¤ëŠ” ëœ»ì´ë‹¤.
                 return true;
             }
         }
         break;
     case Direction::DOWN:
         {
-            // ÇöÀç yÁÂÇ¥°¡ ¾Æ·¡ÂÊ °æ°è¼±º¸´Ù ÀÛÀ¸¸é(À§ÂÊÀÌ¸é) ¾Æ·¡ÂÊÀ¸·Î ÀÌµ¿ÀÌ °¡´ÉÇÏ´Ù.
+            // í˜„ìž¬ yì¢Œí‘œê°€ ì•„ëž˜ìª½ ê²½ê³„ì„ ë³´ë‹¤ ìž‘ìœ¼ë©´(ìœ„ìª½ì´ë©´) ì•„ëž˜ìª½ìœ¼ë¡œ ì´ë™ì´ ê°€ëŠ¥í•˜ë‹¤.
             if (m_Y < maxY)
             {
                 m_Y = std::min<float>(m_Y + _distance, maxY);
@@ -65,7 +65,7 @@ bool Object::Move(Direction _dir, float _distance)
         break;
     case Direction::LEFT:
         {
-            // ÇöÀç xÁÂÇ¥°¡ ¿ÞÂÊ °æ°è¼±º¸´Ù Å©¸é(¿À¸¥ÂÊÀÌ¸é) ¿ÞÂÊÀ¸·Î ÀÌµ¿ÀÌ °¡´ÉÇÏ´Ù.
+            // í˜„ìž¬ xì¢Œí‘œê°€ ì™¼ìª½ ê²½ê³„ì„ ë³´ë‹¤ í¬ë©´(ì˜¤ë¥¸ìª½ì´ë©´) ì™¼ìª½ìœ¼ë¡œ ì´ë™ì´ ê°€ëŠ¥í•˜ë‹¤.
             if (m_X > minX)
             {
                 m_X = std::max<float>(m_X - _distance, minX);
@@ -75,7 +75,7 @@ bool Object::Move(Direction _dir, float _distance)
         break;
     case Direction::RIGHT:
         {
-            // ÇöÀç xÁÂÇ¥°¡ ¿À¸¥ÂÊ °æ°è¼±º¸´Ù ÀÛÀ¸¸é(¿ÞÂÊÀÌ¸é) ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿ÀÌ °¡´ÉÇÏ´Ù.
+            // í˜„ìž¬ xì¢Œí‘œê°€ ì˜¤ë¥¸ìª½ ê²½ê³„ì„ ë³´ë‹¤ ìž‘ìœ¼ë©´(ì™¼ìª½ì´ë©´) ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™ì´ ê°€ëŠ¥í•˜ë‹¤.
             if (m_X < maxX)
             {
                 m_X = std::min<float>(m_X + _distance, maxX);
@@ -84,6 +84,6 @@ bool Object::Move(Direction _dir, float _distance)
         }
         break;
     }
-    // ¿©±â¿¡ ¿Ô´Ù´Â°Ç ¾Æ¹« ÀÌµ¿µµ ÇÏÁö ¾Ê¾Ò´Ù´Â ¶æÀÌ´Ù.
+    // ì—¬ê¸°ì— ì™”ë‹¤ëŠ”ê±´ ì•„ë¬´ ì´ë™ë„ í•˜ì§€ ì•Šì•˜ë‹¤ëŠ” ëœ»ì´ë‹¤.
     return false;
 }
