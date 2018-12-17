@@ -46,6 +46,7 @@ void GameManager::Init()
 
     // 5개의 Object를 생성하면서 x, y 좌표를 매번 랜덤하게 지정한다. (바운더리 내에서)
     RECT boundaryBox = console.GetBoundaryBox();
+	boundaryBox.right /= 2;
 
     // 2개는 기본 오브젝트로 생성
     for (int i = 0; i < 2; ++i)
@@ -124,6 +125,7 @@ void GameManager::Update()
     {
         pObject->Update();
     }
+
 }
 
 void GameManager::Render()
