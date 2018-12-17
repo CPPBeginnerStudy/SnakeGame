@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "SnakeBody.h"
 #include "Console.h"
+#include "GameManager.h"
 
 
 SnakeBody::SnakeBody()
@@ -45,6 +46,22 @@ void SnakeBody::Update()
         prevX = tempX;
         prevY = tempY;
     }
+
+	// 움직인 뒤에 머리가 꼬리에 닿았는지 체크하여 게임오버 처리
+	for (auto& pTail : m_TailList)
+	{
+		// 각 오브젝트의 크기는 1로 고정이기 때문에
+		// 두 오브젝트의 x, y 거리가 모두 1이내 이면 겹쳐져 있는 것이다.
+		if (m_X > pTail->GetX() - 0.5f &&
+			m_X < pTail->GetX() + 0.5f &&
+			m_Y > pTail->GetY() - 0.5f &&
+			m_Y < pTail->GetY() + 0.5f)
+		{
+			// 일단은 충돌시 바로 게임 종료되도록 구현
+			GameManager::GetInstance().Shutdown();
+			return;
+		}
+	}
 }
 
 void SnakeBody::Render()
