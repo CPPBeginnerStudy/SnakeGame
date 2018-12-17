@@ -17,6 +17,8 @@
 RandomSpeedObj::RandomSpeedObj()
     : m_XSpeed(1.f)
     , m_YSpeed(1.f)
+	, m_IsRight(false)
+	, m_IsBottom(false)
 {
 }
 
@@ -48,10 +50,21 @@ void RandomSpeedObj::Update()
     // 방향을 반전시키고, 속도를 랜덤으로 변경하는 코드.
     // 이렇게 기존의 공통된 로직(이동 로직)을 Move()라는 함수로 추출하니
     // 중복코드가 줄어들고 좀 더 차이점을 파악하기 쉬워졌습니다.
+	// [삼항연산자]
+	//   - 간단하게 if문과 같은 분기처리를 하고 싶을 때 사용.
+	//   - 아래와 같이 3개의 항이 존재해서 삼항연산자라고 부르며,
+	//   - 첫항에서의 true/false여부의 따라 true인 경우 둘째항, false인 경우 셋째항이 수행된다.
+	//     (평가식) ? (true인 경우) : (false인 경우)
+	//   - 즉, 아래의 코드는 m_IsRight의 값이 true인 경우 Move()함수의 인자로 RIGHT를 넘기게 되고,
+	//     false인 경우 LEFT를 넘기게 하는 코드이다.
     if (!Move(m_IsRight ? Direction::RIGHT : Direction::LEFT, m_XSpeed))
     {
+		// 이동이 실패하면(바운더리에 걸리면) 반대 방향으로 전환
+		// 아래의 코드는 bool값 변수가 자신의 값을 반전시키는 코드이다. (true->false, false->true)
         m_IsRight = !m_IsRight;
-        m_XSpeed = (rand() % 6 + 1) * 0.5f; // 0.5배 ~ 3배
+
+		// 0.5배 ~ 3배로 이동속도 랜덤조정
+        m_XSpeed = (rand() % 6 + 1) * 0.5f;
     }
     if (!Move(m_IsBottom ? Direction::DOWN : Direction::UP, m_YSpeed))
     {

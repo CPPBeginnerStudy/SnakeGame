@@ -7,8 +7,6 @@ Object::Object()
     : m_Shape(L' ') // ' '이 아닌 L' '인 이유는, char가 아닌 wchar_t이기 때문.
     , m_X(0.f)
     , m_Y(0.f)
-    , m_IsRight(false)
-    , m_IsBottom(false)
 {
 }
 
@@ -18,24 +16,6 @@ Object::~Object()
 
 void Object::Update()
 {
-    // 화면의 바운더리를 벗어나려 하면 반대 방향으로 전환하여 계속 움직이도록 하는 코드
-    // [삼항연산자]
-    //   - 간단하게 if문과 같은 분기처리를 하고 싶을 때 사용.
-    //   - 아래와 같이 3개의 항이 존재해서 삼항연산자라고 부르며,
-    //   - 첫항에서의 true/false여부의 따라 true인 경우 둘째항, false인 경우 셋째항이 수행된다.
-    //     (평가식) ? (true인 경우) : (false인 경우)
-    //   - 즉, 아래의 코드는 m_IsRight의 값이 true인 경우 Move()함수의 인자로 RIGHT를 넘기게 되고,
-    //     false인 경우 LEFT를 넘기게 하는 코드이다.
-    if (!Move(m_IsRight ? Direction::RIGHT : Direction::LEFT, 1.f))
-    {
-        // 이동이 실패하면(바운더리에 걸리면) 반대 방향으로 전환
-        // 아래의 코드는 bool값 변수가 자신의 값을 반전시키는 코드이다. (true->false, false->true)
-        m_IsRight = !m_IsRight;
-    }
-    if (!Move(m_IsBottom ? Direction::DOWN : Direction::UP, 1.f))
-    {
-        m_IsBottom = !m_IsBottom;
-    }
 }
 
 void Object::Render()

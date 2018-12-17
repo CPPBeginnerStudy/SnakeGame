@@ -21,4 +21,3 @@ private:
     Direction           m_Direction;
     std::list<Object*>  m_TailList;
 };
-
