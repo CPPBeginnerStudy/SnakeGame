@@ -96,18 +96,18 @@ void SnakeBody::OnKeyPress(BYTE _key)
             m_Direction = Direction::RIGHT;
         }
         break;
-    case 'Z':
-        {
-            // 이속 줄이기 (최소 0.1배)
-            m_Speed = std::max<float>(m_Speed - 0.1f, 0.1f);
-        }
-        break;
-    case 'X':
-        {
-            // 이속 늘리기 (최대 3배)
-            m_Speed = std::min<float>(m_Speed + 0.1f, 3.0f);
-        }
-        break;
+//  case 'Z':
+//      {
+//          // 이속 줄이기 (최소 0.1배)
+//          m_Speed = std::max<float>(m_Speed - 0.1f, 0.1f);
+//      }
+//      break;
+//  case 'X':
+//      {
+//          // 이속 늘리기 (최대 3배)
+//          m_Speed = std::min<float>(m_Speed + 0.1f, 3.0f);
+//      }
+//      break;
     }
 }
 

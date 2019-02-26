@@ -11,6 +11,7 @@ GameManager::GameManager()
     : m_IsOn(false)
 	, m_pSnakeBody(nullptr)
 	, m_pApple(nullptr)
+	, m_GameSpeed(1.f)
 {
 }
 
@@ -107,7 +108,7 @@ void GameManager::MainLoop()
         // 즉, 1초에 33번 프레임이 돌게되니 33프레임의 게임이라고 보면 된다.
         // (참고로 보통 상용 게임은 Update와 Render의 프레임을 분리하여,
         //  렌더는 60프레임 고정, 업데이트는 수백~수천 프레임으로 돌게 해놓는다.)
-        Sleep(30);
+        Sleep(30 / m_GameSpeed);
     }
 }
 
@@ -201,10 +202,16 @@ void GameManager::KeyInputHandling()
     // 영문자키는 해당 문자 캐릭터(char)의 바이트값과 대응된다.
     if (GetAsyncKeyState('Z') & 0x8000)
     {
-        m_pSnakeBody->OnKeyPress('Z');
+		m_pSnakeBody->OnKeyPress('Z');
+
+		// 게임 속도 줄이기 (최소 0.1배)
+		m_GameSpeed = std::max<float>(m_GameSpeed - 0.1f, 0.1f);
     }
     if (GetAsyncKeyState('X') & 0x8000)
     {
-        m_pSnakeBody->OnKeyPress('X');
+		m_pSnakeBody->OnKeyPress('X');
+
+		// 게임 속도 늘리기 (최대 3배)
+		m_GameSpeed = std::min<float>(m_GameSpeed + 0.1f, 3.0f);
     }
 }
