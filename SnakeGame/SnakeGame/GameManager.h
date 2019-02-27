@@ -33,8 +33,8 @@ private:
     std::list<Object*>  m_ObjectList;
 
     // 네이밍 관습 중에 포인터변수는 앞에 p를 붙여주는 관습이 있습니다.
-	SnakeBody*          m_pSnakeBody;
-	Apple*				m_pApple;
+    SnakeBody*          m_pSnakeBody;
+    Apple*              m_pApple;
 
-	float				m_GameSpeed;
+    float               m_GameSpeed;
 };
