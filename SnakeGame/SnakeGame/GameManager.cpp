@@ -5,6 +5,7 @@
 #include "RandomSpeedObj.h"
 #include "SnakeBody.h"
 #include "Apple.h"
+#include "Timer.h"
 
 
 GameManager::GameManager()
@@ -97,9 +98,12 @@ void GameManager::Release()
 
 void GameManager::MainLoop()
 {
+	Timer mainTimer;
     while (m_IsOn)
     {
-        Update();
+		float realDT = mainTimer.GetDeltaTime();
+		float gameDT = realDT * m_GameSpeed;
+        Update(gameDT);
         Render();
 
         // Sleep()함수는 인자로 받은 수치만큼(밀리세컨드 단위) 프로그램을 정지시킨다.
@@ -108,20 +112,20 @@ void GameManager::MainLoop()
         // 즉, 1초에 33번 프레임이 돌게되니 33프레임의 게임이라고 보면 된다.
         // (참고로 보통 상용 게임은 Update와 Render의 프레임을 분리하여,
         //  렌더는 60프레임 고정, 업데이트는 수백~수천 프레임으로 돌게 해놓는다.)
-        Sleep(30 / m_GameSpeed);
+        //Sleep(30 / m_GameSpeed);
     }
 }
 
-void GameManager::Update()
+void GameManager::Update(float _dt)
 {
     // 먼저 키입력에 대한 처리를 한다.
-    KeyInputHandling();
+    KeyInputHandling(_dt);
 
     // 게임이 가지고 있는 모든 객체들에게
     // 각자 자신을 업데이트 하도록 Update를 호출시켜 준다.
     for (auto& pObject : m_ObjectList)
     {
-        pObject->Update();
+        pObject->Update(_dt);
     }
 
 	// 뱀이 사과를 먹었으면 뱀에 꼬리를 추가해주고, 사과를 다른 곳으로 옮긴다.
@@ -156,7 +160,7 @@ void GameManager::Render()
     console.SwapBuffer();
 }
 
-void GameManager::KeyInputHandling()
+void GameManager::KeyInputHandling(float _dt)
 {
     // GetAsyncKeyState()함수는 현재 키보드의 특정 키의 눌린 상태를 반환한다.
     // 어떤 키를 확인할지는 인자로 받으며, VK_ 로 시작하는 매크로값으로 정해져있다.
@@ -205,13 +209,13 @@ void GameManager::KeyInputHandling()
 		m_pSnakeBody->OnKeyPress('Z');
 
 		// 게임 속도 줄이기 (최소 0.1배)
-		m_GameSpeed = std::max<float>(m_GameSpeed - 0.1f, 0.1f);
+		m_GameSpeed = std::max<float>(m_GameSpeed - _dt, 0.1f);
     }
     if (GetAsyncKeyState('X') & 0x8000)
     {
 		m_pSnakeBody->OnKeyPress('X');
 
 		// 게임 속도 늘리기 (최대 3배)
-		m_GameSpeed = std::min<float>(m_GameSpeed + 0.1f, 3.0f);
+		m_GameSpeed = std::min<float>(m_GameSpeed + _dt, 3.0f);
     }
 }

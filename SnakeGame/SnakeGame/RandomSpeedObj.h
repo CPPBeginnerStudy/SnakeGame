@@ -9,7 +9,7 @@ public:
     virtual ~RandomSpeedObj();
 
     // 상속받는(오버라이딩) 함수들은 뒤에 override 키워드를 붙여준다.
-    virtual void    Update() override;
+    virtual void    Update(float _dt) override;
     virtual void    Render() override;
 
 private:

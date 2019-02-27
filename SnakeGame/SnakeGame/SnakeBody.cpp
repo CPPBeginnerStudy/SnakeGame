@@ -5,7 +5,7 @@
 
 
 SnakeBody::SnakeBody()
-    : m_Speed(1.f)
+    : m_Speed(10.f)
     , m_Direction(Direction::UP)
 {
 	m_Shape = L'▣';
@@ -20,7 +20,7 @@ SnakeBody::~SnakeBody()
     }
 }
 
-void SnakeBody::Update()
+void SnakeBody::Update(float _dt)
 {
     // 원래 뱀꼬리잡기 게임의 뱀은 자동으로 이동합니다..
     // 기존의 각각 직접 작성했던 이동 로직을 Move()라는 함수로 만들어놓으니
@@ -30,7 +30,7 @@ void SnakeBody::Update()
     // 다음 꼬리가 이 보관된 위치로 이동한다.
     float prevX = m_X;
     float prevY = m_Y;
-    Move(m_Direction, m_Speed);
+    Move(m_Direction, m_Speed * _dt);
 
     // 각 꼬리는 이전 꼬리의 위치로 셋팅된다. (즉, 따라가는 형태가 된다.)
     for (auto& pTail : m_TailList)

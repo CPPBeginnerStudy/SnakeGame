@@ -6,6 +6,6 @@ public:
 	Apple();
 	virtual ~Apple();
 
-	virtual void    Update();
+	virtual void    Update(float _dt);
 	virtual void    Render();
 };

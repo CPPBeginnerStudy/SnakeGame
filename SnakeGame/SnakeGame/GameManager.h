@@ -23,10 +23,10 @@ private:
     void                Release();
     void                MainLoop();
 
-    void                Update();
+    void                Update(float _dt);
     void                Render();
 
-    void                KeyInputHandling();
+    void                KeyInputHandling(float _dt);
 
 private:
     bool                m_IsOn;

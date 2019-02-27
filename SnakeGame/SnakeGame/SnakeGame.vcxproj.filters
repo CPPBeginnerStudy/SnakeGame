@@ -13,6 +13,9 @@
     <Filter Include="Class\Singleton">
       <UniqueIdentifier>{0717dfe4-daf5-4064-9311-d550e67fae4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Class\Util">
+      <UniqueIdentifier>{89e1adba-ce3b-4482-8e5a-85ff3e44d42d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -39,6 +42,9 @@
     <ClCompile Include="Apple.cpp">
       <Filter>Class\Object</Filter>
     </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Class\Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -61,6 +67,9 @@
     </ClInclude>
     <ClInclude Include="Apple.h">
       <Filter>Class\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Class\Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

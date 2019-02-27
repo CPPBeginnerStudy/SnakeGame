@@ -11,7 +11,7 @@ Apple::~Apple()
 {
 }
 
-void Apple::Update()
+void Apple::Update(float _dt)
 {
 }
 

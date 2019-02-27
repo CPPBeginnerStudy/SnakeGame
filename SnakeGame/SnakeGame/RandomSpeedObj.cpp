@@ -15,8 +15,8 @@
 //     C* pC = new C(); // A생성자->B생성자->C생성자 순으로 호출됨.
 // }
 RandomSpeedObj::RandomSpeedObj()
-    : m_XSpeed(1.f)
-    , m_YSpeed(1.f)
+    : m_XSpeed(10.f)
+    , m_YSpeed(10.f)
 	, m_IsRight(false)
 	, m_IsBottom(false)
 {
@@ -45,7 +45,7 @@ RandomSpeedObj::~RandomSpeedObj()
 {
 }
 
-void RandomSpeedObj::Update()
+void RandomSpeedObj::Update(float _dt)
 {
     // Move()의 리턴값이 false일 때(즉, 바운더리에 닿았을때)
     // 방향을 반전시키고, 속도를 랜덤으로 변경하는 코드.
@@ -58,19 +58,19 @@ void RandomSpeedObj::Update()
 	//     (평가식) ? (true인 경우) : (false인 경우)
 	//   - 즉, 아래의 코드는 m_IsRight의 값이 true인 경우 Move()함수의 인자로 RIGHT를 넘기게 되고,
 	//     false인 경우 LEFT를 넘기게 하는 코드이다.
-    if (!Move(m_IsRight ? Direction::RIGHT : Direction::LEFT, m_XSpeed))
+    if (!Move(m_IsRight ? Direction::RIGHT : Direction::LEFT, m_XSpeed * _dt))
     {
 		// 이동이 실패하면(바운더리에 걸리면) 반대 방향으로 전환
 		// 아래의 코드는 bool값 변수가 자신의 값을 반전시키는 코드이다. (true->false, false->true)
         m_IsRight = !m_IsRight;
 
 		// 0.5배 ~ 3배로 이동속도 랜덤조정
-        m_XSpeed = (rand() % 6 + 1) * 0.5f;
+        m_XSpeed *= (rand() % 2 + 1) * 0.5f;
     }
-    if (!Move(m_IsBottom ? Direction::DOWN : Direction::UP, m_YSpeed))
+    if (!Move(m_IsBottom ? Direction::DOWN : Direction::UP, m_YSpeed * _dt))
     {
         m_IsBottom = !m_IsBottom;
-        m_YSpeed = (rand() % 6 + 1) * 0.5f;
+        m_YSpeed *= (rand() % 2 + 1) * 0.5f;
     }
 }
 
