@@ -48,9 +48,7 @@ void GameManager::Init()
     auto& console = Console::GetInstance();
     console.Init();
 
-    // 동일한 길이에 대해 인게임 좌표보다 cmd좌표가 x값이 2배이기 때문에 2로 나눠준다.
     RECT boundaryBox = console.GetBoundaryBox();
-    boundaryBox.right /= 2;
 
     // RandomSpeedObj를 생성하면서 x, y 좌표를 매번 랜덤하게 지정한다. (바운더리 내에서)
     // RandomSpeedObj는 Object의 자식이기 때문에 Object*를 담는 자료구조에 같이 보관 가능하다.
@@ -137,7 +135,6 @@ void GameManager::Update(float _dt)
         m_pSnakeBody->AddTail();
 
         RECT boundaryBox = Console::GetInstance().GetBoundaryBox();
-        boundaryBox.right /= 2;
         m_pApple->SetX(rand() % boundaryBox.right);
         m_pApple->SetY(rand() % boundaryBox.bottom);
     }

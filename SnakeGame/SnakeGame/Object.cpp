@@ -31,8 +31,8 @@ bool Object::Move(Direction _dir, float _distance)
 
     // cmd 좌표계인 boundartBox를 인게임 좌표계로 변환하여 계산하도록 한다.
     // cmd 좌표계에선 x가 y의 길이가 다르기 때문에 인게임 좌표계산 과정에 바로 쓰기에 부적절하다.
-    float minX = (float)boundaryBox.left / 2;
-    float maxX = (float)boundaryBox.right / 2;
+    float minX = (float)boundaryBox.left;
+    float maxX = (float)boundaryBox.right;
     float minY = (float)boundaryBox.top;
     float maxY = (float)boundaryBox.bottom;
 

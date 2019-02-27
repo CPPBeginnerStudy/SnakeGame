@@ -115,7 +115,7 @@ RECT Console::GetBoundaryBox() const
     RECT boundaryBox;
     boundaryBox.top = 0;
     boundaryBox.left = 0;
-    boundaryBox.right = m_ScreenWidth - 2;
-    boundaryBox.bottom = m_ScreenHeight - 2; // 아래 한줄을 비우기 위해 -1 추가(마지막 줄은 오른쪽끝이 표시불가)
+    boundaryBox.right = (m_ScreenWidth - 2) / 2;// cmd 좌표계에선 x의 간격이 1/2이기 때문에 인게임 좌표계산에 쓰기 전에 2로 나누어 준다.
+    boundaryBox.bottom = m_ScreenHeight - 2;    // 아래 한줄을 비우기 위해 -1 추가(마지막 줄은 오른쪽끝이 표시불가)
     return boundaryBox;
 }
