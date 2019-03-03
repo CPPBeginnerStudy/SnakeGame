@@ -1,10 +1,10 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Timer.h"
 
 
 Timer::Timer()
 {
-	Init();
+    Init();
 }
 
 Timer::~Timer()
@@ -13,37 +13,37 @@ Timer::~Timer()
 
 void Timer::Init()
 {
-	m_PrevTick = std::chrono::system_clock::now();
-	m_DelayCheckTick = std::chrono::system_clock::now();
-	m_Delay = 0.f;
+    m_PrevTick = std::chrono::system_clock::now();
+    m_DelayCheckTick = std::chrono::system_clock::now();
+    m_Delay = 0.f;
 }
 
-// ÀÌÀü¿¡ ÀÌ ÇÔ¼ö¸¦ È£ÃâÇßÀ» ¶§¿ÍÀÇ ½Ã°£ °£°İÀ» °¡Á®¿Â´Ù.
+// ì´ì „ì— ì´ í•¨ìˆ˜ë¥¼ í˜¸ì¶œí–ˆì„ ë•Œì™€ì˜ ì‹œê°„ ê°„ê²©ì„ ê°€ì ¸ì˜¨ë‹¤.
 float Timer::GetDeltaTime()
 {
-	// ÀÌÀü Æ½°ú ÇöÀç Æ½ »çÀÌÀÇ ½Ã°£Â÷¸¦ ±¸ÇÏ°í, ÇöÀç Æ½À» ÀúÀåÇÑ´Ù. (´ÙÀ½ÀÇ °è»êÀ» À§ÇØ)
-	TickTime curTick = std::chrono::system_clock::now();
-	Seconds deltaTime = curTick - m_PrevTick;
-	m_PrevTick = curTick;
-	return deltaTime.count();
+    // ì´ì „ í‹±ê³¼ í˜„ì¬ í‹± ì‚¬ì´ì˜ ì‹œê°„ì°¨ë¥¼ êµ¬í•˜ê³ , í˜„ì¬ í‹±ì„ ì €ì¥í•œë‹¤. (ë‹¤ìŒì˜ ê³„ì‚°ì„ ìœ„í•´)
+    TickTime curTick = std::chrono::system_clock::now();
+    Seconds deltaTime = curTick - m_PrevTick;
+    m_PrevTick = curTick;
+    return deltaTime.count();
 }
 
-// Æ¯Á¤ ½Ã°£ÀÌ Áö³¯ ¶§±îÁö¸¦ Ã¼Å©ÇÏ±â À§ÇÑ ½Ã°£ °£°İÀ» ¼³Á¤ÇÑ´Ù.
+// íŠ¹ì • ì‹œê°„ì´ ì§€ë‚  ë•Œê¹Œì§€ë¥¼ ì²´í¬í•˜ê¸° ìœ„í•œ ì‹œê°„ ê°„ê²©ì„ ì„¤ì •í•œë‹¤.
 void Timer::SetDelay(float _delayTime)
 {
-	m_Delay = _delayTime;
-	m_DelayCheckTick = std::chrono::system_clock::now();
+    m_Delay = _delayTime;
+    m_DelayCheckTick = std::chrono::system_clock::now();
 }
 
-// Æ¯Á¤ ½Ã°£ÀÌ Áö³µ´ÂÁö Ã¼Å©ÇÑ´Ù.
+// íŠ¹ì • ì‹œê°„ì´ ì§€ë‚¬ëŠ”ì§€ ì²´í¬í•œë‹¤.
 bool Timer::CheckDelay()
 {
-	TickTime curTick = std::chrono::system_clock::now();
-	Seconds deltaTime = curTick - m_DelayCheckTick;
-	if (deltaTime.count() < m_Delay)
-		return false;
+    TickTime curTick = std::chrono::system_clock::now();
+    Seconds deltaTime = curTick - m_DelayCheckTick;
+    if (deltaTime.count() < m_Delay)
+        return false;
 
-	// Áö³­ ÈÄ¿¡´Â ´Ù½Ã ÇöÀç ½Ã°£ºÎÅÍ Æ¯Á¤ ½Ã°£À» Ã¼Å©ÇÏµµ·Ï °»½ÅÇÑ´Ù.
-	m_DelayCheckTick = curTick;
-	return true;
+    // ì§€ë‚œ í›„ì—ëŠ” ë‹¤ì‹œ í˜„ì¬ ì‹œê°„ë¶€í„° íŠ¹ì • ì‹œê°„ì„ ì²´í¬í•˜ë„ë¡ ê°±ì‹ í•œë‹¤.
+    m_DelayCheckTick = curTick;
+    return true;
 }

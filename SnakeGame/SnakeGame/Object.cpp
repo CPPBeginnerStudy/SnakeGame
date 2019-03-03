@@ -21,20 +21,20 @@ void Object::Update(float _dt)
 void Object::Render()
 {
     // 현재 내 위치(m_X, m_Y)에 내 모습(m_Shape)을 콘솔이 그리도록 한다.
-	// m_X를 2배 곱하는 이유는 cmd에서 x좌표 길이가 y좌표 길이의 절반이기 때문.
-	Console::GetInstance().Print(m_Shape, (short)(m_X * 2), (short)m_Y);
+    // m_X를 2배 곱하는 이유는 cmd에서 x좌표 길이가 y좌표 길이의 절반이기 때문.
+    Console::GetInstance().Print(m_Shape, (short)(m_X * 2), (short)m_Y);
 }
 
 bool Object::Move(Direction _dir, float _distance)
 {
     RECT boundaryBox = Console::GetInstance().GetBoundaryBox();
 
-	// cmd 좌표계인 boundartBox를 인게임 좌표계로 변환하여 계산하도록 한다.
-	// cmd 좌표계에선 x가 y의 길이가 다르기 때문에 인게임 좌표계산 과정에 바로 쓰기에 부적절하다.
-	float minX = (float)boundaryBox.left / 2;
-	float maxX = (float)boundaryBox.right / 2;
-	float minY = (float)boundaryBox.top;
-	float maxY = (float)boundaryBox.bottom;
+    // cmd 좌표계인 boundartBox를 인게임 좌표계로 변환하여 계산하도록 한다.
+    // cmd 좌표계에선 x가 y의 길이가 다르기 때문에 인게임 좌표계산 과정에 바로 쓰기에 부적절하다.
+    float minX = (float)boundaryBox.left / 2;
+    float maxX = (float)boundaryBox.right / 2;
+    float minY = (float)boundaryBox.top;
+    float maxY = (float)boundaryBox.bottom;
 
     switch (_dir)
     {

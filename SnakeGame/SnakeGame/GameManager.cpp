@@ -10,9 +10,9 @@
 
 GameManager::GameManager()
     : m_IsOn(false)
-	, m_pSnakeBody(nullptr)
-	, m_pApple(nullptr)
-	, m_GameSpeed(1.f)
+    , m_pSnakeBody(nullptr)
+    , m_pApple(nullptr)
+    , m_GameSpeed(1.f)
 {
 }
 
@@ -48,12 +48,12 @@ void GameManager::Init()
     auto& console = Console::GetInstance();
     console.Init();
 
-	// 동일한 길이에 대해 인게임 좌표보다 cmd좌표가 x값이 2배이기 때문에 2로 나눠준다.
+    // 동일한 길이에 대해 인게임 좌표보다 cmd좌표가 x값이 2배이기 때문에 2로 나눠준다.
     RECT boundaryBox = console.GetBoundaryBox();
-	boundaryBox.right /= 2;
+    boundaryBox.right /= 2;
 
-	// RandomSpeedObj를 생성하면서 x, y 좌표를 매번 랜덤하게 지정한다. (바운더리 내에서)
-	// RandomSpeedObj는 Object의 자식이기 때문에 Object*를 담는 자료구조에 같이 보관 가능하다.
+    // RandomSpeedObj를 생성하면서 x, y 좌표를 매번 랜덤하게 지정한다. (바운더리 내에서)
+    // RandomSpeedObj는 Object의 자식이기 때문에 Object*를 담는 자료구조에 같이 보관 가능하다.
     for (int i = 0; i < 3; ++i)
     {
         Object* pObject = new RandomSpeedObj();
@@ -68,11 +68,11 @@ void GameManager::Init()
     m_pSnakeBody->SetY(boundaryBox.bottom / 2); // 중앙에 생성
     m_ObjectList.push_back(m_pSnakeBody);
 
-	// 뱀이 먹을 사과를 생성한다.
-	m_pApple = new Apple();
-	m_pApple->SetX(rand() % boundaryBox.right);
-	m_pApple->SetY(rand() % boundaryBox.bottom);
-	m_ObjectList.push_back(m_pApple);
+    // 뱀이 먹을 사과를 생성한다.
+    m_pApple = new Apple();
+    m_pApple->SetX(rand() % boundaryBox.right);
+    m_pApple->SetY(rand() % boundaryBox.bottom);
+    m_ObjectList.push_back(m_pApple);
 
     // 모든 초기화가 완료되었으므로, 게임의 상태를 on으로 설정한다.
     m_IsOn = true;
@@ -98,11 +98,11 @@ void GameManager::Release()
 
 void GameManager::MainLoop()
 {
-	Timer mainTimer;
+    Timer mainTimer;
     while (m_IsOn)
     {
-		float realDT = mainTimer.GetDeltaTime();
-		float gameDT = realDT * m_GameSpeed;
+        float realDT = mainTimer.GetDeltaTime();
+        float gameDT = realDT * m_GameSpeed;
         Update(gameDT);
         Render();
 
@@ -128,19 +128,19 @@ void GameManager::Update(float _dt)
         pObject->Update(_dt);
     }
 
-	// 뱀이 사과를 먹었으면 뱀에 꼬리를 추가해주고, 사과를 다른 곳으로 옮긴다.
-	if (m_pSnakeBody->GetX() > m_pApple->GetX() - 0.5f &&
-		m_pSnakeBody->GetX() < m_pApple->GetX() + 0.5f &&
-		m_pSnakeBody->GetY() > m_pApple->GetY() - 0.5f &&
-		m_pSnakeBody->GetY() < m_pApple->GetY() + 0.5f)
-	{
-		m_pSnakeBody->AddTail();
+    // 뱀이 사과를 먹었으면 뱀에 꼬리를 추가해주고, 사과를 다른 곳으로 옮긴다.
+    if (m_pSnakeBody->GetX() > m_pApple->GetX() - 0.5f &&
+        m_pSnakeBody->GetX() < m_pApple->GetX() + 0.5f &&
+        m_pSnakeBody->GetY() > m_pApple->GetY() - 0.5f &&
+        m_pSnakeBody->GetY() < m_pApple->GetY() + 0.5f)
+    {
+        m_pSnakeBody->AddTail();
 
-		RECT boundaryBox = Console::GetInstance().GetBoundaryBox();
-		boundaryBox.right /= 2;
-		m_pApple->SetX(rand() % boundaryBox.right);
-		m_pApple->SetY(rand() % boundaryBox.bottom);
-	}
+        RECT boundaryBox = Console::GetInstance().GetBoundaryBox();
+        boundaryBox.right /= 2;
+        m_pApple->SetX(rand() % boundaryBox.right);
+        m_pApple->SetY(rand() % boundaryBox.bottom);
+    }
 }
 
 void GameManager::Render()
@@ -206,16 +206,16 @@ void GameManager::KeyInputHandling(float _dt)
     // 영문자키는 해당 문자 캐릭터(char)의 바이트값과 대응된다.
     if (GetAsyncKeyState('Z') & 0x8000)
     {
-		m_pSnakeBody->OnKeyPress('Z');
+        m_pSnakeBody->OnKeyPress('Z');
 
-		// 게임 속도 줄이기 (최소 0.1배)
-		m_GameSpeed = std::max<float>(m_GameSpeed - _dt, 0.1f);
+        // 게임 속도 줄이기 (최소 0.1배)
+        m_GameSpeed = std::max<float>(m_GameSpeed - _dt, 0.1f);
     }
     if (GetAsyncKeyState('X') & 0x8000)
     {
-		m_pSnakeBody->OnKeyPress('X');
+        m_pSnakeBody->OnKeyPress('X');
 
-		// 게임 속도 늘리기 (최대 3배)
-		m_GameSpeed = std::min<float>(m_GameSpeed + _dt, 3.0f);
+        // 게임 속도 늘리기 (최대 3배)
+        m_GameSpeed = std::min<float>(m_GameSpeed + _dt, 3.0f);
     }
 }
