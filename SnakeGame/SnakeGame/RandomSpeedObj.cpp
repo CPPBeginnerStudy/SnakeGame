@@ -22,6 +22,7 @@ RandomSpeedObj::RandomSpeedObj()
     , m_IsBottom(false)
 {
     m_Shape = L'★';
+    m_Color = Color::YELLOW;
 
     // 0.1초마다 한번 Update()가 실행되도록 한다. (즉, 스피드가 1이면 1초에 10칸 움직이게 한다.)
     m_pUpdateTimer->SetDelay(0.1f);

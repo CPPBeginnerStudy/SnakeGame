@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Apple.h" />
+    <ClInclude Include="Color.hpp" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Object.h" />

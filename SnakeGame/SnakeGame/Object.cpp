@@ -6,6 +6,7 @@
 
 Object::Object()
     : m_Shape(L' ') // ' '이 아닌 L' '인 이유는, char가 아닌 wchar_t이기 때문.
+    , m_Color(Color::WHITE)
     , m_X(0)
     , m_Y(0)
 {
@@ -26,7 +27,7 @@ void Object::Render()
 {
     // 현재 내 위치(m_X, m_Y)에 내 모습(m_Shape)을 콘솔이 그리도록 한다.
     // m_X를 2배 곱하는 이유는 cmd에서 x좌표 길이가 y좌표 길이의 절반이기 때문.
-    Console::GetInstance().Print(m_Shape, (short)(m_X * 2), (short)m_Y);
+    Console::GetInstance().Print(m_Shape, m_Color, (short)(m_X * 2), (short)m_Y);
 }
 
 bool Object::Move(Direction _dir, int _distance)

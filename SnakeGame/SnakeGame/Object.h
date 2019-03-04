@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Color.hpp"
 class Timer;
 
 // [virtual 키워드의 의미]
@@ -44,10 +45,12 @@ public:
 
 public:
     wchar_t         GetShape() const { return m_Shape; }
+    Color           GetColor() const { return m_Color; }
     int             GetX() const { return m_X; }
     int             GetY() const { return m_Y; }
 
     void            SetShape(wchar_t _shape) { m_Shape = _shape; }
+    void            SetColor(Color _color) { m_Color = _color; }
     void            SetX(int _x) { m_X = _x; }
     void            SetY(int _y) { m_Y = _y; }
 
@@ -61,6 +64,7 @@ protected:
     // 렌더링될 객체는 자신의 모양을 하나의 문자(wchar_t)로 나타내며,
     // x, y 좌표를 통해 현재 위치를 알 수 있게 한다.
     wchar_t         m_Shape;
+    Color           m_Color;
 
     // 뱀꼬리잡기 게임 특성상 1칸씩 도트좌표를 움직이도록 구현하는 것이
     // 여러모로 좋기 때문에 실수형 좌표가 아니라 정수형 좌표를 사용한다.
