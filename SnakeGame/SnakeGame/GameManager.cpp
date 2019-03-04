@@ -127,10 +127,8 @@ void GameManager::Update(float _dt)
     }
 
     // 뱀이 사과를 먹었으면 뱀에 꼬리를 추가해주고, 사과를 다른 곳으로 옮긴다.
-    if (m_pSnakeBody->GetX() > m_pApple->GetX() - 0.5f &&
-        m_pSnakeBody->GetX() < m_pApple->GetX() + 0.5f &&
-        m_pSnakeBody->GetY() > m_pApple->GetY() - 0.5f &&
-        m_pSnakeBody->GetY() < m_pApple->GetY() + 0.5f)
+    if (m_pSnakeBody->GetX() == m_pApple->GetX() &&
+        m_pSnakeBody->GetY() == m_pApple->GetY())
     {
         m_pSnakeBody->AddTail();
 
@@ -213,6 +211,6 @@ void GameManager::KeyInputHandling(float _dt)
         m_pSnakeBody->OnKeyPress('X');
 
         // 게임 속도 늘리기 (최대 3배)
-        m_GameSpeed = std::min<float>(m_GameSpeed + _dt, 3.0f);
+        m_GameSpeed = std::min<float>(m_GameSpeed + _dt, 3.f);
     }
 }

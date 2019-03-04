@@ -11,11 +11,11 @@ public:
     
     float       GetDeltaTime();
 
-    void        SetDelay(float _delayTime);
-    bool        CheckDelay();
+    void        SetDelay(float _delay);
+    bool        CheckDelay(float _dt);
 
 private:
     TickTime    m_PrevTick;
-    TickTime    m_DelayCheckTick;
     float       m_Delay;
+    float       m_AccumDT;
 };

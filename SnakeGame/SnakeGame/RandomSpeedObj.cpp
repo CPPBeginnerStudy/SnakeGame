@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "RandomSpeedObj.h"
 #include "Console.h"
+#include "Timer.h"
 
 
 // 상속받은 클래스의 생성자는 부모클래스의 생성자가 먼저 호출된 이후에 이 생성자가 호출된다.
@@ -15,12 +16,15 @@
 //     C* pC = new C(); // A생성자->B생성자->C생성자 순으로 호출됨.
 // }
 RandomSpeedObj::RandomSpeedObj()
-    : m_XSpeed(10.f)
-    , m_YSpeed(10.f)
+    : m_XSpeed(1)
+    , m_YSpeed(1)
     , m_IsRight(false)
     , m_IsBottom(false)
 {
     m_Shape = L'★';
+
+    // 0.1초마다 한번 Update()가 실행되도록 한다. (즉, 스피드가 1이면 1초에 10칸 움직이게 한다.)
+    m_pUpdateTimer->SetDelay(0.1f);
 }
 
 // 상속받은 클래스의 소멸자는 자신이 먼저 호출된 후 부모클래스의 소멸자를 호출한다.
@@ -47,6 +51,10 @@ RandomSpeedObj::~RandomSpeedObj()
 
 void RandomSpeedObj::Update(float _dt)
 {
+    // 자신의 주기에 맞춰 시행되도록 한다.
+    if (!m_pUpdateTimer->CheckDelay(_dt))
+        return;
+
     // Move()의 리턴값이 false일 때(즉, 바운더리에 닿았을때)
     // 방향을 반전시키고, 속도를 랜덤으로 변경하는 코드.
     // 이렇게 기존의 공통된 로직(이동 로직)을 Move()라는 함수로 추출하니
@@ -58,19 +66,19 @@ void RandomSpeedObj::Update(float _dt)
     //     (평가식) ? (true인 경우) : (false인 경우)
     //   - 즉, 아래의 코드는 m_IsRight의 값이 true인 경우 Move()함수의 인자로 RIGHT를 넘기게 되고,
     //     false인 경우 LEFT를 넘기게 하는 코드이다.
-    if (!Move(m_IsRight ? Direction::RIGHT : Direction::LEFT, m_XSpeed * _dt))
+    if (!Move(m_IsRight ? Direction::RIGHT : Direction::LEFT, m_XSpeed))
     {
         // 이동이 실패하면(바운더리에 걸리면) 반대 방향으로 전환
         // 아래의 코드는 bool값 변수가 자신의 값을 반전시키는 코드이다. (true->false, false->true)
         m_IsRight = !m_IsRight;
 
-        // 0.5배 ~ 3배로 이동속도 랜덤조정
-        m_XSpeed *= (rand() % 2 + 1) * 0.5f;
+        // 1 ~ 3으로 이동속도 랜덤조정
+        m_XSpeed = rand() % 3 + 1;
     }
-    if (!Move(m_IsBottom ? Direction::DOWN : Direction::UP, m_YSpeed * _dt))
+    if (!Move(m_IsBottom ? Direction::DOWN : Direction::UP, m_YSpeed))
     {
         m_IsBottom = !m_IsBottom;
-        m_YSpeed *= (rand() % 2 + 1) * 0.5f;
+        m_YSpeed = rand() % 3 + 1;
     }
 }
 

@@ -1,4 +1,6 @@
 ﻿#pragma once
+class Timer;
+
 // [virtual 키워드의 의미]
 // 어떤 클래스들을 서로 상속관계에 놓을 때 virtual 키워드가 어떤 역할을 하는지 간략히 설명하면,
 // 1. 클래스 정의에서 virtual 키워드가 하나라도 존재하면 그 클래스에 대해 virtual 테이블이 생성된다.
@@ -42,25 +44,29 @@ public:
 
 public:
     wchar_t         GetShape() const { return m_Shape; }
-    float           GetX() const { return m_X; }
-    float           GetY() const { return m_Y; }
+    int             GetX() const { return m_X; }
+    int             GetY() const { return m_Y; }
 
     void            SetShape(wchar_t _shape) { m_Shape = _shape; }
-    void            SetX(float _x) { m_X = _x; }
-    void            SetY(float _y) { m_Y = _y; }
+    void            SetX(int _x) { m_X = _x; }
+    void            SetY(int _y) { m_Y = _y; }
 
     // 방향과 거리를 인자로 받아서 이동을 수행하고,
     // 실제로 이동을 했는지 여부를 bool값으로 반환하는 함수
-    bool            Move(Direction _dir, float _distance);
+    bool            Move(Direction _dir, int _distance);
 
     // private: 범위는 온전히 본 클래스 내에서만 접근이 가능하기 때문에
     // protected: 범위로 변경하였다. 이 범위는 자식 클래스에서도 접근이 가능한 범위이다.
 protected:
     // 렌더링될 객체는 자신의 모양을 하나의 문자(wchar_t)로 나타내며,
     // x, y 좌표를 통해 현재 위치를 알 수 있게 한다.
-    // cmd관련 라이브러리 함수에서 좌표값들을 short타입으로 다루기 때문에
-    // 여기서도 short타입으로 좌표변수를 지정한다.
     wchar_t         m_Shape;
-    float           m_X;
-    float           m_Y;
+
+    // 뱀꼬리잡기 게임 특성상 1칸씩 도트좌표를 움직이도록 구현하는 것이
+    // 여러모로 좋기 때문에 실수형 좌표가 아니라 정수형 좌표를 사용한다.
+    int             m_X;
+    int             m_Y;
+
+    // 각 오브젝트마다 업데이트 주기를 따로 관리할 수 있도록 타이머를 포함시킨다.
+    Timer*          m_pUpdateTimer;
 };
