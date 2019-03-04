@@ -97,13 +97,22 @@ void GameManager::Release()
 void GameManager::MainLoop()
 {
     Timer mainTimer;
+    mainTimer.SetDelay(0.01f); // 100초에 한번 렌더링 되도록 하자.
     while (m_IsOn)
     {
         float realDT = mainTimer.GetDeltaTime();
         float gameDT = realDT * m_GameSpeed;
-        Update(gameDT);
-        Render();
 
+        // 게임의 업데이트는 게임 스피드가 적용된 dt를 넘겨서 스피드 조절이 가능하게 한다.
+        Update(gameDT);
+
+        // 렌더 프레임 제한은 실제 dt로 체크한다. (게임 속도와 무관하게)
+        if (mainTimer.CheckDelay(realDT))
+        {
+            // 렌더링 프레임이 너무 빠르면 오히려 화면이 버벅인다.
+            // Update와 다르게 눈에 편한정도로 제한을 두는 것이 좋다.
+            Render();
+        }
         // Sleep()함수는 인자로 받은 수치만큼(밀리세컨드 단위) 프로그램을 정지시킨다.
         // 메인루프가 너무 빨리 돌면 화면을 알아보기 힘드니,
         // 0.03초마다 한 프레임씩 수행되도록 이러한 처리를 추가하였다.
