@@ -1,7 +1,6 @@
 ﻿#include "pch.h"
 #include "Object.h"
 #include "Console.h"
-#include "Timer.h"
 
 
 Object::Object()
@@ -10,13 +9,10 @@ Object::Object()
     , m_X(0)
     , m_Y(0)
 {
-    // 업데이트 주기를 다르게 갖기 위한 타이머
-    m_pUpdateTimer = new Timer();
 }
 
 Object::~Object()
 {
-    delete m_pUpdateTimer;
 }
 
 void Object::Update(float _dt)

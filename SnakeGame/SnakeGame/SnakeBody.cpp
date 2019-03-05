@@ -2,7 +2,6 @@
 #include "SnakeBody.h"
 #include "Console.h"
 #include "GameManager.h"
-#include "Timer.h"
 
 
 SnakeBody::SnakeBody()
@@ -11,9 +10,6 @@ SnakeBody::SnakeBody()
 {
     m_Shape = L'▣';
     m_Color = Color::GREEN;
-
-    // 0.1초마다 한번 Update()가 실행되도록 한다. (즉, 스피드가 1이면 1초에 10칸 움직이게 한다.)
-    m_pUpdateTimer->SetDelay(0.1f);
 }
 
 SnakeBody::~SnakeBody()
@@ -27,10 +23,6 @@ SnakeBody::~SnakeBody()
 
 void SnakeBody::Update(float _dt)
 {
-    // 자신의 주기에 맞춰 시행되도록 한다.
-    if (!m_pUpdateTimer->CheckDelay(_dt))
-        return;
-
     // 원래 뱀꼬리잡기 게임의 뱀은 자동으로 이동합니다..
     // 기존의 각각 직접 작성했던 이동 로직을 Move()라는 함수로 만들어놓으니
     // 여기서도 이렇게 코드를 간결하게 짤 수 있게 됩니다.

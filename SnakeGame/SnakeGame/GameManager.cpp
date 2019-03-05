@@ -97,17 +97,22 @@ void GameManager::Release()
 void GameManager::MainLoop()
 {
     Timer mainTimer;
-    mainTimer.SetDelay(0.01f); // 100초에 한번 렌더링 되도록 하자.
+    Timer updateTimer;
+    Timer renderTimer;
+    updateTimer.SetDelay(0.1f);     // 1초에  10번 업데이트 되도록 하자.
+    renderTimer.SetDelay(0.01f);    // 1초에  100번 렌더링 되도록 하자.
     while (m_IsOn)
     {
         float realDT = mainTimer.GetDeltaTime();
         float gameDT = realDT * m_GameSpeed;
 
         // 게임의 업데이트는 게임 스피드가 적용된 dt를 넘겨서 스피드 조절이 가능하게 한다.
-        Update(gameDT);
-
+        if (updateTimer.CheckDelay(gameDT))
+        {
+            Update(gameDT);
+        }
         // 렌더 프레임 제한은 실제 dt로 체크한다. (게임 속도와 무관하게)
-        if (mainTimer.CheckDelay(realDT))
+        if (renderTimer.CheckDelay(realDT))
         {
             // 렌더링 프레임이 너무 빠르면 오히려 화면이 버벅인다.
             // Update와 다르게 눈에 편한정도로 제한을 두는 것이 좋다.
@@ -213,13 +218,13 @@ void GameManager::KeyInputHandling(float _dt)
         m_pSnakeBody->OnKeyPress('Z');
 
         // 게임 속도 줄이기 (최소 0.1배)
-        m_GameSpeed = std::max<float>(m_GameSpeed - _dt, 0.1f);
+        m_GameSpeed = std::max<float>(m_GameSpeed - 0.1f, 0.1f);
     }
     if (GetAsyncKeyState('X') & 0x8000)
     {
         m_pSnakeBody->OnKeyPress('X');
 
         // 게임 속도 늘리기 (최대 3배)
-        m_GameSpeed = std::min<float>(m_GameSpeed + _dt, 3.f);
+        m_GameSpeed = std::min<float>(m_GameSpeed + 0.1f, 3.f);
     }
 }
