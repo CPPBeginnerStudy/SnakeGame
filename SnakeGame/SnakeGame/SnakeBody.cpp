@@ -77,22 +77,34 @@ void SnakeBody::OnKeyPress(BYTE _key)
     {
     case VK_UP:
         {
-            m_Direction = Direction::UP;
+            if (m_Direction != Direction::DOWN)
+            {
+                m_Direction = Direction::UP;
+            }
         }
         break;
     case VK_DOWN:
         {
-            m_Direction = Direction::DOWN;
+            if (m_Direction != Direction::UP)
+            {
+                m_Direction = Direction::DOWN;
+            }
         }
         break;
     case VK_LEFT:
         {
-            m_Direction = Direction::LEFT;
+            if (m_Direction != Direction::RIGHT)
+            {
+                m_Direction = Direction::LEFT;
+            }
         }
         break;
     case VK_RIGHT:
         {
-            m_Direction = Direction::RIGHT;
+            if (m_Direction != Direction::LEFT)
+            {
+                m_Direction = Direction::RIGHT;
+            }
         }
         break;
     }
@@ -101,7 +113,7 @@ void SnakeBody::OnKeyPress(BYTE _key)
 void SnakeBody::AddTail()
 {
     Object* pTail = new Object();
-    pTail->SetShape(L'※');
+    pTail->SetShape(L'□');
     pTail->SetColor(Color::GREEN);
     m_TailList.push_back(pTail);
 }
