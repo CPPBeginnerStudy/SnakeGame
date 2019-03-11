@@ -45,6 +45,9 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Class\Util</Filter>
     </ClCompile>
+    <ClCompile Include="DeathZone.cpp">
+      <Filter>Class\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -73,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="Color.hpp">
       <Filter>Class\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="DeathZone.h">
+      <Filter>Class\Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

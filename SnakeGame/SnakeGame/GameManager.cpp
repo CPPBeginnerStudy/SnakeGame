@@ -6,12 +6,14 @@
 #include "SnakeBody.h"
 #include "Apple.h"
 #include "Timer.h"
+#include "DeathZone.h"
 
 
 GameManager::GameManager()
     : m_IsOn(false)
     , m_pSnakeBody(nullptr)
     , m_pApple(nullptr)
+    , m_pDeathZone(nullptr)
     , m_GameSpeed(1.f)
 {
 }
@@ -68,9 +70,14 @@ void GameManager::Init()
 
     // 뱀이 먹을 사과를 생성한다.
     m_pApple = new Apple();
-    m_pApple->SetX(rand() % boundaryBox.right);
-    m_pApple->SetY(rand() % boundaryBox.bottom);
+    m_pApple->SetX(rand() % (boundaryBox.right - 2) + 1);
+    m_pApple->SetY(rand() % (boundaryBox.bottom - 2) + 1);
     m_ObjectList.push_back(m_pApple);
+
+    // 데스존을 생성한다.
+    m_pDeathZone = new DeathZone();
+    m_pDeathZone->GenerateLines();
+    m_ObjectList.push_back(m_pDeathZone);
 
     // 모든 초기화가 완료되었으므로, 게임의 상태를 on으로 설정한다.
     m_IsOn = true;
@@ -92,6 +99,9 @@ void GameManager::Release()
     // 보관중이던 모든 포인터들이 그 가리키던 인스턴스들을 다 할당해제했으니,
     // m_ObjectList를 비워주도록 한다. 이렇게 안하면 주인없는 포인터들을 가지고 있게 된다.
     m_ObjectList.clear();
+    m_pSnakeBody = nullptr;
+    m_pApple = nullptr;
+    m_pDeathZone = nullptr;
 }
 
 void GameManager::MainLoop()
@@ -147,8 +157,14 @@ void GameManager::Update(float _dt)
         m_pSnakeBody->AddTail();
 
         RECT boundaryBox = Console::GetInstance().GetBoundaryBox();
-        m_pApple->SetX(rand() % boundaryBox.right);
-        m_pApple->SetY(rand() % boundaryBox.bottom);
+        m_pApple->SetX(rand() % (boundaryBox.right - 2) + 1);
+        m_pApple->SetY(rand() % (boundaryBox.bottom - 2) + 1);
+    }
+
+    // 뱀이 데스존에 들어가면 게임오버
+    if (m_pDeathZone->IsInDeathZone(m_pSnakeBody))
+    {
+        GameManager::GetInstance().Shutdown();
     }
 }
 

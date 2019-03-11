@@ -23,7 +23,7 @@
     <ProjectGuid>{62FCA17D-6DD4-45DD-8339-A9638B3E8720}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>SnakeGame</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -154,6 +154,7 @@
     <ClInclude Include="Apple.h" />
     <ClInclude Include="Color.hpp" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="DeathZone.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="pch.h" />
@@ -164,6 +165,7 @@
   <ItemGroup>
     <ClCompile Include="Apple.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="DeathZone.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="pch.cpp">

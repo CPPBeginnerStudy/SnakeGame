@@ -4,7 +4,7 @@
 
 Apple::Apple()
 {
-    m_Shape = L'＠';
+    m_Shape = L'Ǒ';
     m_Color = Color::RED;
 }
 
