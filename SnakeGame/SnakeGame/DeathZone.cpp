@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "DeathZone.h"
 #include "Console.h"
 
@@ -9,7 +9,7 @@ DeathZone::DeathZone()
 
 DeathZone::~DeathZone()
 {
-	DestroyLines();
+    DestroyLines();
 }
 
 void DeathZone::Update(float _dt)
@@ -18,77 +18,77 @@ void DeathZone::Update(float _dt)
 
 void DeathZone::Render()
 {
-	for (auto& pObject : m_DeathLines)
-	{
-		pObject->Render();
-	}
+    for (auto& pObject : m_DeathLines)
+    {
+        pObject->Render();
+    }
 }
 
 void DeathZone::GenerateLines()
 {
-	DestroyLines();
+    DestroyLines();
 
-	// ¿ÞÂÊ»ó´ÜºÎÅÍ ½ÃÀÛÇØ¼­ ¿À¸¥ÂÊ->¾Æ·¡->¿ÞÂÊ->À§ ¼øÀ¸·Î ÀÌµ¿ÇÏ¸ç ¹Ù¿î´õ¸®¿¡ µ¥½º¶óÀÎÀ» ¸¸µç´Ù.
-	RECT boundaryBox = Console::GetInstance().GetBoundaryBox();
-	int x = boundaryBox.left;
-	int y = boundaryBox.top;
-	Direction dir = Direction::RIGHT;
-	while (true)
-	{
-		switch (dir)
-		{
-		case Direction::UP:		--y;	break;
-		case Direction::DOWN:	++y;	break;
-		case Direction::LEFT:	--x;	break;
-		case Direction::RIGHT:	++x;	break;
-		}
-		if (x > boundaryBox.right)
-		{
-			x = boundaryBox.right;
-			dir = Direction::DOWN;
-		}
-		else if (y > boundaryBox.bottom)
-		{
-			y = boundaryBox.bottom;
-			dir = Direction::LEFT;
-		}
-		else if (x < boundaryBox.left)
-		{
-			x = boundaryBox.left;
-			dir = Direction::UP;
-		}
-		else if (y < boundaryBox.top)
-		{
-			// À§ÀÇ ³¡±îÁö µµ´ÞÇÏ¸é ·çÇÁ Á¾·á
-			break;
-		}
-		Object* pObject = new Object();
-		pObject->SetX(x);
-		pObject->SetY(y);
-		pObject->SetShape(L'¢É');
-		pObject->SetColor(Color::DARK_YELLOW);
-		m_DeathLines.push_back(pObject);
-	}
+    // ì™¼ìª½ìƒë‹¨ë¶€í„° ì‹œìž‘í•´ì„œ ì˜¤ë¥¸ìª½->ì•„ëž˜->ì™¼ìª½->ìœ„ ìˆœìœ¼ë¡œ ì´ë™í•˜ë©° ë°”ìš´ë”ë¦¬ì— ë°ìŠ¤ë¼ì¸ì„ ë§Œë“ ë‹¤.
+    RECT boundaryBox = Console::GetInstance().GetBoundaryBox();
+    int x = boundaryBox.left;
+    int y = boundaryBox.top;
+    Direction dir = Direction::RIGHT;
+    while (true)
+    {
+        switch (dir)
+        {
+        case Direction::UP:     --y;    break;
+        case Direction::DOWN:   ++y;    break;
+        case Direction::LEFT:   --x;    break;
+        case Direction::RIGHT:  ++x;    break;
+        }
+        if (x > boundaryBox.right)
+        {
+            x = boundaryBox.right;
+            dir = Direction::DOWN;
+        }
+        else if (y > boundaryBox.bottom)
+        {
+            y = boundaryBox.bottom;
+            dir = Direction::LEFT;
+        }
+        else if (x < boundaryBox.left)
+        {
+            x = boundaryBox.left;
+            dir = Direction::UP;
+        }
+        else if (y < boundaryBox.top)
+        {
+            // ìœ„ì˜ ëê¹Œì§€ ë„ë‹¬í•˜ë©´ ë£¨í”„ ì¢…ë£Œ
+            break;
+        }
+        Object* pObject = new Object();
+        pObject->SetX(x);
+        pObject->SetY(y);
+        pObject->SetShape(L'â–¨');
+        pObject->SetColor(Color::DARK_YELLOW);
+        m_DeathLines.push_back(pObject);
+    }
 }
 
 void DeathZone::DestroyLines()
 {
-	for (auto& pObject : m_DeathLines)
-	{
-		delete pObject;
-	}
+    for (auto& pObject : m_DeathLines)
+    {
+        delete pObject;
+    }
 }
 
 bool DeathZone::IsInDeathZone(Object* _pObject) const
 {
-	if (_pObject == nullptr)
-		return false;
+    if (_pObject == nullptr)
+        return false;
 
-	for (auto& pObject : m_DeathLines)
-	{
-		if (pObject->GetX() == _pObject->GetX() &&
-			pObject->GetY() == _pObject->GetY())
-			return true;
-	}
-	return false;
+    for (auto& pObject : m_DeathLines)
+    {
+        if (pObject->GetX() == _pObject->GetX() &&
+            pObject->GetY() == _pObject->GetY())
+            return true;
+    }
+    return false;
 }
