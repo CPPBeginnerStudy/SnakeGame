@@ -10,7 +10,8 @@
 
 
 GameManager::GameManager()
-    : m_IsOn(false)
+    : m_IsRunning(false)
+    , m_IsPlaying(false)
     , m_pSnakeBody(nullptr)
     , m_pApple(nullptr)
     , m_pDeathZone(nullptr)
@@ -24,15 +25,30 @@ GameManager::~GameManager()
 
 void GameManager::Run()
 {
-    Init();
-    MainLoop();
-    Release();
+    m_IsRunning = true;
+
+    // 이 루프는 게임오버가 되어도 처음으로 돌아가
+    // 다시 게임을 시작할 수 있도록 해주기 위한 메인루프이다.
+    // 이 루프를 빠져나가면 비로소 프로그램이 종료된다.
+    while (m_IsRunning)
+    {
+        Init();
+        GameLoop();
+        Release();
+    }
 }
 
 void GameManager::Shutdown()
 {
     // 게임의 상태를 off로 변경함으로써 다음 프레임에 메인루프에서 빠져나오게 한다.
-    m_IsOn = false;
+    m_IsRunning = false;
+    m_IsPlaying = false;
+}
+
+void GameManager::GameOver()
+{
+    // 플레이 플래그를 off 하여 게임루프를 빠져나오게 한다.
+    m_IsPlaying = false;
 }
 
 void GameManager::Init()
@@ -79,8 +95,8 @@ void GameManager::Init()
     m_pDeathZone->GenerateLines();
     m_ObjectList.push_back(m_pDeathZone);
 
-    // 모든 초기화가 완료되었으므로, 게임의 상태를 on으로 설정한다.
-    m_IsOn = true;
+    // 모든 초기화가 완료되었으므로, 게임의 상태를 플레이 중으로 설정한다.
+    m_IsPlaying = true;
 }
 
 void GameManager::Release()
@@ -104,14 +120,14 @@ void GameManager::Release()
     m_pDeathZone = nullptr;
 }
 
-void GameManager::MainLoop()
+void GameManager::GameLoop()
 {
     Timer mainTimer;
     Timer updateTimer;
     Timer renderTimer;
-    updateTimer.SetDelay(0.1f);     // 1초에  10번 업데이트 되도록 하자.
-    renderTimer.SetDelay(0.01f);    // 1초에  100번 렌더링 되도록 하자.
-    while (m_IsOn)
+    updateTimer.SetDelay(0.1f);     // 1초에 10번 업데이트 되도록 하자.
+    renderTimer.SetDelay(0.05f);    // 1초에 20번 렌더링 되도록 하자.
+    while (m_IsPlaying)
     {
         float realDT = mainTimer.GetDeltaTime();
         float gameDT = realDT * m_GameSpeed;
@@ -164,7 +180,7 @@ void GameManager::Update(float _dt)
     // 뱀이 데스존에 들어가면 게임오버
     if (m_pDeathZone->IsInDeathZone(m_pSnakeBody))
     {
-        GameManager::GetInstance().Shutdown();
+        GameManager::GetInstance().GameOver();
     }
 }
 
@@ -233,14 +249,14 @@ void GameManager::KeyInputHandling(float _dt)
     {
         m_pSnakeBody->OnKeyPress('Z');
 
-        // 게임 속도 줄이기 (최소 0.1배)
-        m_GameSpeed = std::max<float>(m_GameSpeed - 0.1f, 0.1f);
+        // 게임 속도 줄이기 (최소 0.5배)
+        m_GameSpeed = std::max<float>(m_GameSpeed - 0.1f, 0.5f);
     }
     if (GetAsyncKeyState('X') & 0x8000)
     {
         m_pSnakeBody->OnKeyPress('X');
 
-        // 게임 속도 늘리기 (최대 3배)
-        m_GameSpeed = std::min<float>(m_GameSpeed + 0.1f, 3.f);
+        // 게임 속도 늘리기 (최대 2배)
+        m_GameSpeed = std::min<float>(m_GameSpeed + 0.1f, 2.f);
     }
 }

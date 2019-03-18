@@ -53,7 +53,7 @@ void SnakeBody::Update(float _dt)
             m_Y == pTail->GetY())
         {
             // 일단은 충돌시 바로 게임 종료되도록 구현
-            GameManager::GetInstance().Shutdown();
+            GameManager::GetInstance().GameOver();
             return;
         }
     }

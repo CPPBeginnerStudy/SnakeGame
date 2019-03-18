@@ -18,11 +18,12 @@ private:
 public:
     void                Run();
     void                Shutdown();
+    void                GameOver();
 
 private:
     void                Init();
     void                Release();
-    void                MainLoop();
+    void                GameLoop();
 
     void                Update(float _dt);
     void                Render();
@@ -30,7 +31,8 @@ private:
     void                KeyInputHandling(float _dt);
 
 private:
-    bool                m_IsOn;
+    bool                m_IsRunning;
+    bool                m_IsPlaying;
     std::list<Object*>  m_ObjectList;
 
     // 네이밍 관습 중에 포인터변수는 앞에 p를 붙여주는 관습이 있습니다.
