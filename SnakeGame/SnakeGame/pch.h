@@ -20,5 +20,6 @@
 #include <map>
 #include <algorithm>
 #include <chrono>
+#include <sstream>
 
 #endif //PCH_H

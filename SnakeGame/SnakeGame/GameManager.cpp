@@ -16,6 +16,8 @@ GameManager::GameManager()
     , m_pApple(nullptr)
     , m_pDeathZone(nullptr)
     , m_GameSpeed(1.f)
+    , m_GameLevel(1)
+    , m_EatAppleNum(0)
 {
 }
 
@@ -97,6 +99,9 @@ void GameManager::Init()
 
     // 모든 초기화가 완료되었으므로, 게임의 상태를 플레이 중으로 설정한다.
     m_IsPlaying = true;
+    m_GameSpeed = 1.f;
+    m_GameLevel = 1;
+    m_EatAppleNum = 0;
 }
 
 void GameManager::Release()
@@ -170,6 +175,7 @@ void GameManager::Update(float _dt)
     if (m_pSnakeBody->GetX() == m_pApple->GetX() &&
         m_pSnakeBody->GetY() == m_pApple->GetY())
     {
+        m_EatAppleNum++;
         m_pSnakeBody->AddTail();
 
         RECT boundaryBox = Console::GetInstance().GetBoundaryBox();
@@ -195,6 +201,14 @@ void GameManager::Render()
     {
         pObject->Render();
     }
+
+    // 화면 최하단의 빈 공간에 게임 상태 관련 텍스트들을 출력해준다.
+    RECT boundaryBox = console.GetBoundaryBox();
+    std::wostringstream oss;
+    oss << L"GameSpeed: " << m_GameSpeed << L"\t"
+        << L"GameLevel: " << m_GameLevel << L"\t"
+        << L"Eat Apple: " << m_EatAppleNum;
+    console.PrintText(oss.str(), boundaryBox.left, boundaryBox.bottom + 1);
 
     // 모든 객체의 렌더링이 끝나면, 백버퍼와 스크린버퍼를 교체하여
     // 화면에 한번에 이번 프레임에 바뀐 렌더링 내용이 표시되도록 한다.

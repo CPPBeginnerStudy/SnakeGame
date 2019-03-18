@@ -41,4 +41,6 @@ private:
     DeathZone*          m_pDeathZone;
 
     float               m_GameSpeed;
+    int                 m_GameLevel;
+    int                 m_EatAppleNum;
 };
