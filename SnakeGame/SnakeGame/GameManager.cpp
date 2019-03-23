@@ -157,6 +157,8 @@ void GameManager::GameLoop()
         //  렌더는 60프레임 고정, 업데이트는 수백~수천 프레임으로 돌게 해놓는다.)
         //Sleep(30 / m_GameSpeed);
     }
+    // 게임이 종료되었을 때 표시할 여러가지들은 아래 함수에서 처리한다.
+    ShowGameOverState();
 }
 
 void GameManager::Update(float _dt)
@@ -272,5 +274,34 @@ void GameManager::KeyInputHandling(float _dt)
 
         // 게임 속도 늘리기 (최대 2배)
         m_GameSpeed = std::min<float>(m_GameSpeed + 0.1f, 2.f);
+    }
+}
+
+void GameManager::ShowGameOverState()
+{
+    // 결과 화면 표시
+    auto& console = Console::GetInstance();
+    console.Clear();
+    RECT boundaryBox = console.GetBoundaryBox();
+    std::wostringstream oss;
+    oss << L"\t\t\t\t    --- GameOver ---\n\n"
+        << L"\t\t\t\t     Score:   " << m_EatAppleNum << L"\n"
+        << L"\t\t\t\t     Restart: ENTER\n"
+        << L"\t\t\t\t     Exit:    ESC";
+    console.PrintText(oss.str(), boundaryBox.left, boundaryBox.bottom  / 2.3f);
+    console.SwapBuffer();
+
+    // 유저 입력 대기
+    while (_getch())
+    {
+        if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+        {
+            Shutdown();
+            return;
+        }
+        if (GetAsyncKeyState(VK_RETURN) & 0x8000)
+        {
+            return;
+        }
     }
 }

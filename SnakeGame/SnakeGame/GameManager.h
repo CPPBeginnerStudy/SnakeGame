@@ -29,6 +29,7 @@ private:
     void                Render();
 
     void                KeyInputHandling(float _dt);
+    void                ShowGameOverState();
 
 private:
     bool                m_IsRunning;
