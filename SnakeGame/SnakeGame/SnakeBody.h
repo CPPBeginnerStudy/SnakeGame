@@ -9,11 +9,15 @@ public:
     virtual void        Update(float _dt) override;
     virtual void        Render() override;
 
+    virtual bool        HitCheck(Object* _pOther) override;
+    virtual void        OnHit(Object* _pHitter) override;
+
 public:
     int                 GetSpeed() const { return m_Speed; }
     void                SetSpeed(int _speed) { m_Speed = _speed; }
 
-    void                OnKeyPress(BYTE _key);
+    void                OnKeyPress(int _key);
+
     void                AddTail();
     void                ClearTails();
 

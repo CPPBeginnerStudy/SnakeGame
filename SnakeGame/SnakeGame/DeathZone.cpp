@@ -24,6 +24,27 @@ void DeathZone::Render()
     }
 }
 
+bool DeathZone::HitCheck(Object* _pOther)
+{
+    // 상대가 없거나, 자신이라면 생략
+    if (_pOther == nullptr || _pOther == this)
+        return false;
+
+    // 데스라인 객체 중 하나라도 상대객체와 부딪히면 나머지 데스라인과의 체크는 생략한다.
+    for (auto& pObject : m_DeathLines)
+    {
+        if (pObject->GetX() == _pOther->GetX() &&
+            pObject->GetY() == _pOther->GetY())
+            return true;
+    }
+    return false;
+}
+
+void DeathZone::OnHit(Object* _pHitter)
+{
+    // 데스존은 누군가에게 맞지 않는다.
+}
+
 void DeathZone::GenerateLines()
 {
     DestroyLines();

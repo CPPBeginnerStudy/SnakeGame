@@ -82,3 +82,13 @@ void RandomSpeedObj::Render()
     // 부모 클래스의 구현과 다르게 처리할 게 없다면, 그냥 부모꺼를 여기서 다시 호출해주면 된다.
     Object::Render();
 }
+
+bool RandomSpeedObj::HitCheck(Object* _pOther)
+{
+    return Object::HitCheck(_pOther);
+}
+
+void RandomSpeedObj::OnHit(Object* _pHitter)
+{
+    Object::OnHit(_pHitter);
+}

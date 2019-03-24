@@ -26,6 +26,24 @@ void Object::Render()
     Console::GetInstance().Print(m_Shape, m_Color, (short)(m_X * 2), (short)m_Y);
 }
 
+bool Object::HitCheck(Object* _pOther)
+{
+    // 상대가 없거나, 자신이라면 생략
+    if (_pOther == nullptr || _pOther == this)
+        return false;
+
+    // 상대와 좌표가 같다면 상대를 때린 것이다.
+    if (m_X == _pOther->GetX() &&
+        m_Y == _pOther->GetY())
+        return true;
+
+    return false;
+}
+
+void Object::OnHit(Object* _pHitter)
+{
+}
+
 bool Object::Move(Direction _dir, int _distance)
 {
     RECT boundaryBox = Console::GetInstance().GetBoundaryBox();

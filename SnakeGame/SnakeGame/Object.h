@@ -43,6 +43,9 @@ public:
     virtual void    Update(float _dt);
     virtual void    Render();
 
+    virtual bool    HitCheck(Object* _pOther);
+    virtual void    OnHit(Object* _pHitter);
+
 public:
     wchar_t         GetShape() const { return m_Shape; }
     Color           GetColor() const { return m_Color; }

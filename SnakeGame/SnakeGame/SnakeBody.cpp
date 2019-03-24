@@ -2,6 +2,7 @@
 #include "SnakeBody.h"
 #include "Console.h"
 #include "GameManager.h"
+#include "DeathZone.h"
 
 
 SnakeBody::SnakeBody()
@@ -40,20 +41,6 @@ void SnakeBody::Update(float _dt)
         prevX = tempX;
         prevY = tempY;
     }
-
-    // 움직인 뒤에 머리가 꼬리에 닿았는지 체크하여 게임오버 처리
-    for (auto& pTail : m_TailList)
-    {
-        // 각 오브젝트의 크기는 1로 고정이기 때문에
-        // 두 오브젝트의 x, y 거리가 모두 같으면 겹쳐져 있는 것이다.
-        if (m_X == pTail->GetX() &&
-            m_Y == pTail->GetY())
-        {
-            // 일단은 충돌시 바로 게임 종료되도록 구현
-            GameManager::GetInstance().GameOver();
-            return;
-        }
-    }
 }
 
 void SnakeBody::Render()
@@ -67,7 +54,39 @@ void SnakeBody::Render()
     }
 }
 
-void SnakeBody::OnKeyPress(BYTE _key)
+bool SnakeBody::HitCheck(Object* _pOther)
+{
+    // 상대가 없다면 생략 (자기 자신의 체크는 허용(몸통과 꼬리의 충돌체크를 위해))
+    if (_pOther == nullptr)
+        return false;
+
+    // 자기 자신이 아닌 경우에는 몸통의 좌표와 먼저 충돌체크를 해준다.
+    if (_pOther != this)
+    {
+        if (m_X == _pOther->GetX() &&
+            m_Y == _pOther->GetY())
+            return true;
+    }
+    // 꼬리 객체 중 하나라도 상대객체와 부딪히면 나머지 꼬리와의 체크는 생략한다.
+    for (auto& pTail : m_TailList)
+    {
+        if (pTail->GetX() == _pOther->GetX() &&
+            pTail->GetY() == _pOther->GetY())
+            return true;
+    }
+    return false;
+}
+
+void SnakeBody::OnHit(Object* _pHitter)
+{
+    // 히터가 자신이거나(꼬리와의 충돌시) 데스존인 경우 게임 오버 처리한다.
+    if (_pHitter == this || dynamic_cast<DeathZone*>(_pHitter) != nullptr)
+    {
+        GameManager::GetInstance().GameOver();
+    }
+}
+
+void SnakeBody::OnKeyPress(int _key)
 {
     // 유저는 방향만 바꿔줄 수 있다.
     switch (_key)

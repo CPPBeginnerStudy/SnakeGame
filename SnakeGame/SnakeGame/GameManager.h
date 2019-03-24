@@ -19,8 +19,11 @@ public:
     void                Run();
     void                Shutdown();
     void                GameOver();
+
     int                 GetRandom(int _min, int _max) const;
     int                 GetGameLevel() const { return m_GameLevel; }
+
+    void                OnAppleEaten();
 
 private:
     void                Init();
@@ -30,9 +33,13 @@ private:
     void                Update(float _dt);
     void                Render();
 
-    void                KeyInputHandling(float _dt);
+    void                KeyInputHandling();
+    bool                CheckKeyInput(int _keyIdx);
+
+    void                PrintGameState();
     void                ShowGameOverState();
     void                GoToNextStage();
+    void                CollisionCheck();
 
 private:
     bool                m_IsRunning;

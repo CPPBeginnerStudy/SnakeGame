@@ -2,6 +2,7 @@
 #include "Apple.h"
 #include "Console.h"
 #include "GameManager.h"
+#include "SnakeBody.h"
 
 
 Apple::Apple()
@@ -21,6 +22,32 @@ void Apple::Update(float _dt)
 void Apple::Render()
 {
     Object::Render();
+}
+
+bool Apple::HitCheck(Object* _pOther)
+{
+    // 사과는 누군가를 때리지 않는다.
+    return false;
+}
+
+void Apple::OnHit(Object* _pHitter)
+{
+    // 히터가 뱀이 아니면 생략
+    auto pSnake = dynamic_cast<SnakeBody*>(_pHitter);
+    if (pSnake == nullptr)
+        return;
+
+    // 뱀이 사과를 먹었으면 뱀에 꼬리를 추가해주고, 사과를 다른 곳으로 옮긴다.
+    pSnake->AddTail();
+    RandomMovePosition();
+
+    // 옮긴 곳에 뱀이 있으면 다시 옮긴다. (겹치지 않을 때까지)
+    while (pSnake->HitCheck(this))
+    {
+        RandomMovePosition();
+    }
+    // 게임 매니저에게 사과가 먹혔다고 알려준다. (스코어 처리 등을 위해)
+    GameManager::GetInstance().OnAppleEaten();
 }
 
 void Apple::RandomMovePosition()

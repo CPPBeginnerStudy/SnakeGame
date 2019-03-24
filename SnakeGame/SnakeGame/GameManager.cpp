@@ -68,6 +68,19 @@ int GameManager::GetRandom(int _min, int _max) const
     return result + _min; // 결과값에 min값을 더해주면 비로소 min ~ max 사이의 랜던값이 된다.
 }
 
+void GameManager::OnAppleEaten()
+{
+    // 사과 먹을 때마다 현재 난이도만큼의 점수를 부여하자.
+    m_GameScore += m_GameLevel;
+
+    // 목표 개수만큼 사과를 먹으면 게임 레벨을 변경해준다.
+    m_EatAppleNum++;
+    if (m_EatAppleNum >= m_GoalAppleNum)
+    {
+        GoToNextStage();
+    }
+}
+
 void GameManager::Init()
 {
     // 랜덤값 사용을 위해 랜덤시드를 초기화한다.
@@ -180,7 +193,7 @@ void GameManager::GameLoop()
 void GameManager::Update(float _dt)
 {
     // 먼저 키입력에 대한 처리를 한다.
-    KeyInputHandling(_dt);
+    KeyInputHandling();
 
     // 게임이 가지고 있는 모든 객체들에게
     // 각자 자신을 업데이트 하도록 Update를 호출시켜 준다.
@@ -188,58 +201,60 @@ void GameManager::Update(float _dt)
     {
         pObject->Update(_dt);
     }
-
-    // 뱀이 사과를 먹었으면 뱀에 꼬리를 추가해주고, 사과를 다른 곳으로 옮긴다.
-    if (m_pSnakeBody->GetX() == m_pApple->GetX() &&
-        m_pSnakeBody->GetY() == m_pApple->GetY())
-    {
-        // 사과 먹을 때마다 현재 난이도만큼의 점수를 부여하자.
-        m_GameScore += m_GameLevel;
-
-        // 목표 개수만큼 사과를 먹으면 게임 레벨을 변경해준다.
-        m_EatAppleNum++;
-        if (m_EatAppleNum >= m_GoalAppleNum)
-        {
-            GoToNextStage();
-        }
-        m_pSnakeBody->AddTail();
-        m_pApple->RandomMovePosition();
-    }
-
-    // 뱀이 데스존에 들어가면 게임오버
-    if (m_pDeathZone->IsInDeathZone(m_pSnakeBody))
-    {
-        GameManager::GetInstance().GameOver();
-    }
+    // 모든 객체들이 업데이트 완료된 후에 충돌체크를 처리한다.
+    CollisionCheck();
 }
 
 void GameManager::Render()
 {
     // 이번 프레임의 렌더링을 시작하기에 앞서 먼저 백버퍼를 깨끗히 지워준다.
-    auto& console = Console::GetInstance();
-    console.Clear();
+    Console::GetInstance().Clear();
 
     // 빈 도화지 상태의 백버퍼에 각 객체들의 렌더링을 수행시킨다.
     for (auto& pObject : m_ObjectList)
     {
         pObject->Render();
     }
-
-    // 화면 최하단의 빈 공간에 게임 상태 관련 텍스트들을 출력해준다.
-    RECT boundaryBox = console.GetBoundaryBox();
-    std::wostringstream oss;
-    oss << L"GameSpeed: " << m_GameSpeed << L"\t"
-        << L"GameLevel: " << m_GameLevel << L"\t"
-        << L"GameScore: " << m_GameScore << L"\t"
-        << L"Eat Apple: " << m_EatAppleNum << L"/" << m_GoalAppleNum;
-    console.PrintText(oss.str(), boundaryBox.left, boundaryBox.bottom + 1);
+    // 현재 게임 진행 상태를 출력한다.
+    PrintGameState();
 
     // 모든 객체의 렌더링이 끝나면, 백버퍼와 스크린버퍼를 교체하여
     // 화면에 한번에 이번 프레임에 바뀐 렌더링 내용이 표시되도록 한다.
-    console.SwapBuffer();
+    Console::GetInstance().SwapBuffer();
 }
 
-void GameManager::KeyInputHandling(float _dt)
+void GameManager::KeyInputHandling()
+{
+    // 키입력에 대한 세부구현은 아래 함수에서 처리하도록 구현을 분리하고,
+    // 여기서는 각 키가 눌렸을 때 게임 매니저가 해야할 동작들에 집중한다.
+    if (CheckKeyInput(VK_ESCAPE))
+    {
+        // ESC 키가 눌리면 프로그램 종료
+        Shutdown();
+        return;
+    }
+
+    // 방향키 입력은 동시에 멀티입력이 되면 안 된다.
+    if (CheckKeyInput(VK_UP)) {}
+    else if (CheckKeyInput(VK_DOWN)) {}
+    else if (CheckKeyInput(VK_LEFT)) {}
+    else if (CheckKeyInput(VK_RIGHT)) {}
+
+    // 그외 입력 처리 (else if가 아닌 이유는, 여러 키가 같이 눌렸을때에 모두 처리해줘야하기 때문)
+    // 영문자키는 해당 문자 캐릭터(char)의 바이트값과 대응된다.
+    if (CheckKeyInput('Z'))
+    {
+        // 게임 속도 줄이기 (최소 0.5배)
+        m_GameSpeed = std::max<float>(m_GameSpeed - 0.1f, 0.5f);
+    }
+    if (CheckKeyInput('X'))
+    {
+        // 게임 속도 늘리기 (최대 2배)
+        m_GameSpeed = std::min<float>(m_GameSpeed + 0.1f, 2.f);
+    }
+}
+
+bool GameManager::CheckKeyInput(int _keyIdx)
 {
     // GetAsyncKeyState()함수는 현재 키보드의 특정 키의 눌린 상태를 반환한다.
     // 어떤 키를 확인할지는 인자로 받으며, VK_ 로 시작하는 매크로값으로 정해져있다.
@@ -254,55 +269,34 @@ void GameManager::KeyInputHandling(float _dt)
     // 이를 통해 키가 현시점에서 처음 눌렸는지, 아니면 누르고 있는 상태였는지 등을 체크할 수 있지만,
     // 사실 일반적으로 이러한 구분까지는 필요없고, 키가 지금 눌려있는지 여부만 알면 되기 때문에
     // 아래와 같이 0x8000 플래그가 있는지를 비트연산하여 키의 눌림여부를 확인한다. (즉, 위의 2, 4번 케이스를 모두 true처리)
-    if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+    if (GetAsyncKeyState(_keyIdx) & 0x8000)
     {
-        // ESC 키가 눌리면 프로그램 종료
-        Shutdown();
-    }
-
-    // 방향키 입력 처리 (else if가 아닌 이유는, 여러 키가 같이 눌렸을때에 모두 처리해줘야하기 때문)
-    if (GetAsyncKeyState(VK_UP) & 0x8000)
-    {
-        // 각 키입력에 대한 처리는 각 클래스의 핸들러에서 구현하도록 넘겨준다.
+        // 각 키입력에 대한 처리를 각 클래스의 핸들러에서 구현하도록 넘겨준다.
         // 그래야 메인로직이 깔끔해지고, 이후 작업하기 편해진다.
-        m_pSnakeBody->OnKeyPress(VK_UP);
+        m_pSnakeBody->OnKeyPress(_keyIdx);
 
         // 나중에 SnakeBody말고도 키입력을 받을 대상이 생기면 여기에 추가
+        return true;
     }
-    else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-    {
-        // 방향키 입력은 동시에 멀티입력이 되면 안 된다.
-        m_pSnakeBody->OnKeyPress(VK_DOWN);
-    }
-    else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-    {
-        m_pSnakeBody->OnKeyPress(VK_LEFT);
-    }
-    else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-    {
-        m_pSnakeBody->OnKeyPress(VK_RIGHT);
-    }
+    return false;
+}
 
-    // 영문자키는 해당 문자 캐릭터(char)의 바이트값과 대응된다.
-    if (GetAsyncKeyState('Z') & 0x8000)
-    {
-        m_pSnakeBody->OnKeyPress('Z');
-
-        // 게임 속도 줄이기 (최소 0.5배)
-        m_GameSpeed = std::max<float>(m_GameSpeed - 0.1f, 0.5f);
-    }
-    if (GetAsyncKeyState('X') & 0x8000)
-    {
-        m_pSnakeBody->OnKeyPress('X');
-
-        // 게임 속도 늘리기 (최대 2배)
-        m_GameSpeed = std::min<float>(m_GameSpeed + 0.1f, 2.f);
-    }
+void GameManager::PrintGameState()
+{
+    // 화면 최하단의 빈 공간에 게임 상태 관련 텍스트들을 출력해준다.
+    auto& console = Console::GetInstance();
+    RECT boundaryBox = console.GetBoundaryBox();
+    std::wostringstream oss;
+    oss << L"GameSpeed: " << m_GameSpeed << L"\t"
+        << L"GameLevel: " << m_GameLevel << L"\t"
+        << L"GameScore: " << m_GameScore << L"\t"
+        << L"Eat Apple: " << m_EatAppleNum << L"/" << m_GoalAppleNum;
+    console.PrintText(oss.str(), (short)boundaryBox.left, (short)boundaryBox.bottom + 1);
 }
 
 void GameManager::ShowGameOverState()
 {
-    // 결과 화면 표시
+    // 결과 화면 표시 (더이상 렌더링 루프에 들어가지 않으므로 직접 스왑버퍼 처리까지 해준다.)
     auto& console = Console::GetInstance();
     console.Clear();
     RECT boundaryBox = console.GetBoundaryBox();
@@ -311,21 +305,19 @@ void GameManager::ShowGameOverState()
         << L"\t\t\t\t     Score:   " << m_GameScore << L"\n"
         << L"\t\t\t\t     Restart: ENTER\n"
         << L"\t\t\t\t     Exit:    ESC";
-    console.PrintText(oss.str(), boundaryBox.left, boundaryBox.bottom  / 2.3f);
+    console.PrintText(oss.str(), (short)boundaryBox.left, (short)(boundaryBox.bottom  / 2.3f));
     console.SwapBuffer();
 
     // 유저 입력 대기
     while (_getch())
     {
-        if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+        if (CheckKeyInput(VK_ESCAPE))
         {
             Shutdown();
             return;
         }
-        if (GetAsyncKeyState(VK_RETURN) & 0x8000)
-        {
+        if (CheckKeyInput(VK_RETURN))
             return;
-        }
     }
 }
 
@@ -333,5 +325,24 @@ void GameManager::GoToNextStage()
 {
     m_GameScore += m_GameLevel * 10; // 스테이지 클리어시마다 현재 스테이지 * 10 만큼의 보너스 점수를 주자.
     m_GameLevel++;
-    m_GoalAppleNum += 2; // 다음 목표는 2씩 증가
+    m_GoalAppleNum += 10 + m_GameLevel * 2;
+}
+
+void GameManager::CollisionCheck()
+{
+    // 충돌체가 2개 이상이 존재하는 경우만 충돌체크가 의미있다.
+    if (m_ObjectList.size() < 2)
+        return;
+
+    for (auto& pObject : m_ObjectList)
+    {
+        for (auto& pObjectOther : m_ObjectList)
+        {
+            // 충돌한 경우 상대에게 내가 쳤다고 알려준다.
+            if (pObject->HitCheck(pObjectOther))
+            {
+                pObjectOther->OnHit(pObject);
+            }
+        }
+    }
 }

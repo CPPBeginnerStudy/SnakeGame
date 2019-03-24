@@ -9,5 +9,8 @@ public:
     virtual void    Update(float _dt) override;
     virtual void    Render() override;
 
+    virtual bool    HitCheck(Object* _pOther) override;
+    virtual void    OnHit(Object* _pHitter) override;
+
     void            RandomMovePosition();
 };
