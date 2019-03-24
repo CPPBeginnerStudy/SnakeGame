@@ -17,7 +17,9 @@ GameManager::GameManager()
     , m_pDeathZone(nullptr)
     , m_GameSpeed(1.f)
     , m_GameLevel(1)
+    , m_GameScore(0)
     , m_EatAppleNum(0)
+    , m_GoalAppleNum(10)
 {
 }
 
@@ -51,6 +53,19 @@ void GameManager::GameOver()
 {
     // 플레이 플래그를 off 하여 게임루프를 빠져나오게 한다.
     m_IsPlaying = false;
+}
+
+int GameManager::GetRandom(int _min, int _max) const
+{
+    // 최소, 최대 범위를 지정하여 랜덤값을 산출하는 함수
+    int range = _max - _min;
+    if (range < 1)
+    {
+        // 최소한 min ~ max값의 차이가 1 이상은 나야 의미가 있으니 나머진 예외처리한다.
+        return 0;
+    }
+    int result = rand() % (range + 1); // 범위값으로 나눈 나머지 값. 즉, 0 ~ range 사이의 랜덤값
+    return result + _min; // 결과값에 min값을 더해주면 비로소 min ~ max 사이의 랜던값이 된다.
 }
 
 void GameManager::Init()
@@ -88,8 +103,7 @@ void GameManager::Init()
 
     // 뱀이 먹을 사과를 생성한다.
     m_pApple = new Apple();
-    m_pApple->SetX(rand() % (boundaryBox.right - 2) + 1);
-    m_pApple->SetY(rand() % (boundaryBox.bottom - 2) + 1);
+    m_pApple->RandomMovePosition();
     m_ObjectList.push_back(m_pApple);
 
     // 데스존을 생성한다.
@@ -101,7 +115,9 @@ void GameManager::Init()
     m_IsPlaying = true;
     m_GameSpeed = 1.f;
     m_GameLevel = 1;
+    m_GameScore = 0;
     m_EatAppleNum = 0;
+    m_GoalAppleNum = 10;
 }
 
 void GameManager::Release()
@@ -177,12 +193,17 @@ void GameManager::Update(float _dt)
     if (m_pSnakeBody->GetX() == m_pApple->GetX() &&
         m_pSnakeBody->GetY() == m_pApple->GetY())
     {
-        m_EatAppleNum++;
-        m_pSnakeBody->AddTail();
+        // 사과 먹을 때마다 현재 난이도만큼의 점수를 부여하자.
+        m_GameScore += m_GameLevel;
 
-        RECT boundaryBox = Console::GetInstance().GetBoundaryBox();
-        m_pApple->SetX(rand() % (boundaryBox.right - 2) + 1);
-        m_pApple->SetY(rand() % (boundaryBox.bottom - 2) + 1);
+        // 목표 개수만큼 사과를 먹으면 게임 레벨을 변경해준다.
+        m_EatAppleNum++;
+        if (m_EatAppleNum >= m_GoalAppleNum)
+        {
+            GoToNextStage();
+        }
+        m_pSnakeBody->AddTail();
+        m_pApple->RandomMovePosition();
     }
 
     // 뱀이 데스존에 들어가면 게임오버
@@ -209,7 +230,8 @@ void GameManager::Render()
     std::wostringstream oss;
     oss << L"GameSpeed: " << m_GameSpeed << L"\t"
         << L"GameLevel: " << m_GameLevel << L"\t"
-        << L"Eat Apple: " << m_EatAppleNum;
+        << L"GameScore: " << m_GameScore << L"\t"
+        << L"Eat Apple: " << m_EatAppleNum << L"/" << m_GoalAppleNum;
     console.PrintText(oss.str(), boundaryBox.left, boundaryBox.bottom + 1);
 
     // 모든 객체의 렌더링이 끝나면, 백버퍼와 스크린버퍼를 교체하여
@@ -247,15 +269,16 @@ void GameManager::KeyInputHandling(float _dt)
 
         // 나중에 SnakeBody말고도 키입력을 받을 대상이 생기면 여기에 추가
     }
-    if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+    else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
     {
+        // 방향키 입력은 동시에 멀티입력이 되면 안 된다.
         m_pSnakeBody->OnKeyPress(VK_DOWN);
     }
-    if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+    else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
     {
         m_pSnakeBody->OnKeyPress(VK_LEFT);
     }
-    if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+    else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
     {
         m_pSnakeBody->OnKeyPress(VK_RIGHT);
     }
@@ -285,7 +308,7 @@ void GameManager::ShowGameOverState()
     RECT boundaryBox = console.GetBoundaryBox();
     std::wostringstream oss;
     oss << L"\t\t\t\t    --- GameOver ---\n\n"
-        << L"\t\t\t\t     Score:   " << m_EatAppleNum << L"\n"
+        << L"\t\t\t\t     Score:   " << m_GameScore << L"\n"
         << L"\t\t\t\t     Restart: ENTER\n"
         << L"\t\t\t\t     Exit:    ESC";
     console.PrintText(oss.str(), boundaryBox.left, boundaryBox.bottom  / 2.3f);
@@ -304,4 +327,11 @@ void GameManager::ShowGameOverState()
             return;
         }
     }
+}
+
+void GameManager::GoToNextStage()
+{
+    m_GameScore += m_GameLevel * 10; // 스테이지 클리어시마다 현재 스테이지 * 10 만큼의 보너스 점수를 주자.
+    m_GameLevel++;
+    m_GoalAppleNum += 2; // 다음 목표는 2씩 증가
 }

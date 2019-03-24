@@ -6,6 +6,8 @@ public:
     Apple();
     virtual ~Apple();
 
-    virtual void Update(float _dt) override;
-    virtual void Render() override;
+    virtual void    Update(float _dt) override;
+    virtual void    Render() override;
+
+    void            RandomMovePosition();
 };

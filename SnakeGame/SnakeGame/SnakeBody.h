@@ -15,6 +15,7 @@ public:
 
     void                OnKeyPress(BYTE _key);
     void                AddTail();
+    void                ClearTails();
 
 private:
     int                 m_Speed;

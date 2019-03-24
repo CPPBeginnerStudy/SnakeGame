@@ -19,6 +19,8 @@ public:
     void                Run();
     void                Shutdown();
     void                GameOver();
+    int                 GetRandom(int _min, int _max) const;
+    int                 GetGameLevel() const { return m_GameLevel; }
 
 private:
     void                Init();
@@ -30,6 +32,7 @@ private:
 
     void                KeyInputHandling(float _dt);
     void                ShowGameOverState();
+    void                GoToNextStage();
 
 private:
     bool                m_IsRunning;
@@ -43,5 +46,7 @@ private:
 
     float               m_GameSpeed;
     int                 m_GameLevel;
+    int                 m_GameScore;
     int                 m_EatAppleNum;
+    int                 m_GoalAppleNum;
 };

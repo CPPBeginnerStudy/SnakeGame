@@ -15,10 +15,7 @@ SnakeBody::SnakeBody()
 SnakeBody::~SnakeBody()
 {
     // 만약에 꼬리가 있으면 함께 할당해제 해준다.
-    for (auto& pTail : m_TailList)
-    {
-        delete pTail;
-    }
+    ClearTails();
 }
 
 void SnakeBody::Update(float _dt)
@@ -116,4 +113,13 @@ void SnakeBody::AddTail()
     pTail->SetShape(L'□');
     pTail->SetColor(Color::GREEN);
     m_TailList.push_back(pTail);
+}
+
+void SnakeBody::ClearTails()
+{
+    for (auto& pTail : m_TailList)
+    {
+        delete pTail;
+    }
+    m_TailList.clear();
 }
